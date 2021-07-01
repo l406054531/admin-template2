@@ -1,0 +1,63 @@
+/*
+ * @Author: lct
+ * @Date: 2021-02-02 11:42:05
+ * @LastEditTime: 2021-04-07 12:06:31
+ * @LastEditors: Please set LastEditors
+ * @Description: 全局主题变量配置
+ * @FilePath: \vue-cli4.x-project-template\src\styles\variables.scss
+ */
+
+/* stylelint-disable */
+@charset "utf-8";
+
+// 字体大小配置
+$font-size-small-s: 10px;
+$font-size-small: 12px;
+$font-size-medium: 14px;
+$font-size-medium-x: 16px;
+$font-size-large: 18px;
+$font-size-large-x: 22px;
+$font-size-large-xx: 26px;
+$font-size-large-xxx: 28px;
+
+// 字体颜色配置
+$font-color-default: #409eff; // 框架默认主题色
+$font-color-base: #1f1f1f;
+$font-color-blue: $font-color-default;
+$font-color-green: #13ce66;
+$font-color-white: #fff;
+$font-color-black: #000;
+$font-color-grey: #515a6e;
+$font-color-yellow: #ffba00;
+$font-color-orange: #ff6700;
+$font-color-red: #ff4d4f;
+$font-color-gray: rgba(0, 0, 0, 0.65);
+
+
+// sidebar
+$menuText:#bfcbd9;
+$menuActiveText:#409EFF;
+$subMenuActiveText:#f4f4f5; //https://github.com/ElemeFE/element/issues/12951
+
+$menuBg:#304156;
+$menuHover:#263445;
+
+$subMenuBg:#1f2d3d;
+$subMenuHover:#001528;
+
+$sideBarWidth: 210px;
+
+// the :export directive is the magic sauce for webpack
+// https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
+:export {
+  theme: $font-color-default;
+
+  menuText: $menuText;
+  menuActiveText: $menuActiveText;
+  subMenuActiveText: $subMenuActiveText;
+  menuBg: $menuBg;
+  menuHover: $menuHover;
+  subMenuBg: $subMenuBg;
+  subMenuHover: $subMenuHover;
+  sideBarWidth: $sideBarWidth;
+}
