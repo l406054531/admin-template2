@@ -108,7 +108,7 @@ export default {
   data() {
     return {
       tableHeader: [ //表格头部
-        { label: '', prop: '', type: 'selection' },
+        // { label: '', prop: '', type: 'selection' },
         { label: '-', prop: 'index', type: 'index' },
         { label: '角色字段', prop: 'roleName' },
         { label: '角色名称', prop: 'roleNickname' },
@@ -172,9 +172,6 @@ export default {
     handleUpdate(data) {
       this.dialogTitle = '编辑';
       this.register(false)
-      if (data.year) {
-        data.year = data.year + ""
-      }
       //赋值
       for (let item of this.dialogFormElement) {
         this.dialogFormModel[item['prop']] = data[item['prop']]
@@ -308,13 +305,7 @@ export default {
       this.tableParams.query = params.query
       this.$refs.mytableRef.findPageList(params)
     },
-    /**批量删除--异步请求 */
-    handleBatchDelete() {
-      if (this.multipleSelection.length === 0) return this.$message({ type: 'warning', message: '请勾选需要删除的数据' })
-      deleteBatchList(this.url, this.multipleSelection).then(() => {
-        this.tableKey = Math.random() * 100 + new Date();
-      })
-    },
+
     /**弹出框确定按钮*/
     handleDialogSubmit() {
       let flag = this.$refs["myform"].validateForm();

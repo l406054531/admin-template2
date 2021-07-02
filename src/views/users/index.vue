@@ -86,6 +86,7 @@
 
 import myTable from './module/table';  //表格
 import { addListApi, deleteListApi, updateListApi } from '@/api/user.js'; //异步方法
+import { findAllList } from '@/api/roles.js'; //异步方法
 
 export default {
   components: { myTable },
@@ -93,7 +94,7 @@ export default {
   data() {
     return {
       tableHeader: [ //表格头部
-        { label: '', prop: '', type: 'selection' },
+        // { label: '', prop: '', type: 'selection' },
         { label: '-', prop: 'index', type: 'index' },
         { label: '用户账号', prop: 'username' },
         { label: '用户名称', prop: 'nickname' },
@@ -126,14 +127,13 @@ export default {
         { label: '用户账号', prop: 'username', type: 'input' },
         { label: '用户密码', prop: 'password', type: 'input' },
         { label: '用户名称', prop: 'nickname', type: 'input' },
-        { label: '角色', prop: 'role', type: 'input' },
+        { label: '角色', prop: 'role', type: 'select', selectLabel: 'elementName', selectValue: 'elementValue', typeselects: [] },
         { label: '', prop: 'idUser', type: 'id' },
       ],
       editDialogFormElement: [  //表单元素
         { label: '用户账号', prop: 'username', type: 'input' },
-
         { label: '用户名称', prop: 'nickname', type: 'input' },
-        { label: '角色', prop: 'role', type: 'input' },
+        { label: '角色', prop: 'role', type: 'select', selectLabel: 'elementName', selectValue: 'elementValue', typeselects: [] },
         { label: '', prop: 'idUser', type: 'id' },
       ],
       search: {
@@ -145,14 +145,13 @@ export default {
     };
   },
   mounted() {
-
+    this.findAllRoleList()
   },
   methods: {
-
     /**点击新增 */
     handleAdd() {
       this.dialogTitle = '新增';
-      this.dialogFormElement=this.addDialogFormElement
+      this.dialogFormElement = this.addDialogFormElement
       this.dialogFormVisible = true;
     },
     /**点击刷新 */
@@ -166,7 +165,7 @@ export default {
     /**点击表格修改 */
     handleUpdate(data) {
       this.dialogTitle = '编辑';
-       this.dialogFormElement=this.editDialogFormElement
+      this.dialogFormElement = this.editDialogFormElement
       this.register(false)
       //赋值
       for (let item of this.dialogFormElement) {
@@ -319,7 +318,26 @@ export default {
         return false;
       }
     },
+    findAllRoleList() {
 
+      findAllList().then(response => {
+        if (response.status === 0) {
+          let arr = response.data.map(item => {
+            return { label: item.roleNickname, value: item.roleName }
+          })
+          for (let item of this.addDialogFormElement) {
+            if (item.label === '角色') {
+              item.typeselects = arr
+            }
+          }
+          for (let item of this.editDialogFormElement) {
+            if (item.label === '角色') {
+              item.typeselects = arr
+            }
+          }
+        }
+      })
+    }
   }
 }
 

@@ -69,9 +69,11 @@
                        @change="item.change?item.change(item):''">
               <el-option v-for="(selectedItem,index) in item.typeselects"
                          :key="index"
-                         :label="selectedItem.label||selectedItem.name"
-                         :value="selectedItem.value||selectedItem.name">
+                         :label="selectedItem.label"
+                         :value="selectedItem.value">
               </el-option>
+              <!-- :label="item.selectLabel?selectedItem[selectLabel]: selectedItem.label"
+                         :value="item.selectValue?selectedItem[selectValue]: selectedItem.value"> -->
             </el-select>
             <!-- 级联选择器 -->
             <!-- :show-all-levels="false" 仅显示最后一级 -->

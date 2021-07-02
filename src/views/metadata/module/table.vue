@@ -4,7 +4,6 @@
               border
               style=" min-height: 730px"
               highlight-current-row
-              @selection-change="handleSelectionChange"
               :cell-style="{padding: '4px'}"
               :ref="defaultSelected?'mytable':''"
               height="690">
@@ -16,10 +15,6 @@
                          :prop="item.prop"
                          :min-width="item.width">
           <template slot-scope="scope">
-            <span>启用:</span>
-            <el-switch v-model="scope.row.enable"
-                       active-color="#13ce66">
-            </el-switch>
             <el-button type="primary"
                        plain
                        size="small"
@@ -68,7 +63,7 @@
 </template>
 
 <script>
-import { findPageListApi } from '@/api/metadata';
+import { findAllMetadataElementList, findAllList } from '@/api/metadata';
 export default {
   name: 'Mytable',
   props: {
@@ -89,97 +84,52 @@ export default {
         return {}
       }
     },
-
+    url: {
+      type: String
+    }
   },
-  data () {
+  data() {
     return {
       tableData: [],
     }
   },
-  mounted () {
-    this.findPageList(this.params)
-    console.log(this.params);
-
-  },
-  watch: {
-    params: function (value, oldValue) {
-      debugger
+  mounted() {
+    if (this.url == 'metadataType') {
+      this.findAllList({}, this.url)
+    } else {
+      this.findAllList(this.params, this.url)
     }
   },
   methods: {
     /**获取数据列表 */
-    findPageList (data) {
+    findPageList(data) {
       let getData = JSON.stringify(data);
-      findPageListApi({ params: getData }).then(response => {
+      findAllMetadataElementList({ params: getData }).then(response => {
         if (response.status === 0) {
           this.tableData = response.data
-          this.$emit('tableTotal', response.data.total)
+          console.log(this.tableData);
+          this.$emit('emitTableData', response)
         }
       })
     },
+    findAllList(data, url) {
+      let getData = JSON.stringify(data);
+      findAllList({ params: getData }, url).then(response => {
+        if (response.status === 0) {
+          this.tableData = response.data
+          this.$emit('emitTableData', response)
+        }
+      })
+    },
+    parentEmitData(data) {
+      this.tableData = data
+    },
     /**点击删除 */
-    handleDelete (data) {
-      let key = this.params.idKey
-      let params = {}
-      params[key] = data[key]
-      this.$confirm("此操作将永久删除该数据, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          deleteList(params, this.params.url).then(response => {
-            if (response.status === 0) {
-              this.$message({
-                type: "success",
-                message: "删除成功",
-              });
-              this.findPortPageList(this.params)
-            } else {
-              this.$message({
-                type: "error",
-                message: response.message,
-              });
-            }
-          });
-        })
-        .catch();
+    handleDelete(row) {
+      this.$emit('handleDelete', row)
     },
-    /**批量数据 */
-    handleSelectionChange (val) {
-      let key = this.params.idKey
-      let idArr = val.map(item => {
-        return item[key]
-      })
-      this.$emit("handleSelectionChange", idArr)
-    },
-    /**恢复 */
-    handleUpdate (data) {
-      let key = this.params.idKey
-      let params = {}
-      params[key] = data[key]
-      this.$confirm("此操作将恢复该数据, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then(() => {
-          revertList(params, this.params.url).then(response => {
-            if (response.status === 0) {
-              this.$message({
-                type: "success",
-                message: "恢复成功",
-              });
-              this.findPortPageList(this.params)
-            } else {
-              this.$message({
-                type: "error",
-                message: response.message,
-              });
-            }
-          });
-        })
-        .catch();
+    handleUpdate(row) {
+      this.$emit('handleUpdate', row)
     }
   },
 

@@ -27,6 +27,7 @@ const actions = {
             login(usetInfo).then(response => {
                 let { token, menu, data } = response
                 menu = JSON.stringify(formatTree(menu, "idParent", "idPage"));
+                data = JSON.stringify(data);
                 commit("SET_TOKEN", token)
                 commit("USER_INFO", data)
                 setToken(token)

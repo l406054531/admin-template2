@@ -9,6 +9,14 @@ export function findPageListApi(params) {
         params
     })
 }
+export function findAllList(params) {
+    return request({
+        baseURL,
+        url: '/roles/findAllList',
+        method: 'get',
+        params
+    })
+}
 export function findPermissionApi(params) {
     return request({
         baseURL,

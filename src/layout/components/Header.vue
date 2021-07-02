@@ -34,6 +34,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import { title } from '@/config'
+import { getUserInfo } from "@/utils/cache"
 export default {
   name: 'Header',
   data() {
@@ -42,9 +43,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'name'
-    ])
+    // ...mapGetters([
+    //   'name'
+    // ])
+    name(){
+        return JSON.parse(getUserInfo()).nickname
+    }
   },
   methods: {
     async logout() {
@@ -52,7 +56,7 @@ export default {
       this.$router.push(`/login`)
       window.location.reload()
     }
-  }
+  },
 }
 </script>
 
