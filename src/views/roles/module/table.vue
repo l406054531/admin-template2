@@ -7,7 +7,6 @@
               highlight-current-row
               :default-sort="{prop: '', order: ''}"
               @sort-change="sortChange"
-              @selection-change="handleSelectionChange"
               :cell-style="{padding: '4px'}"
               :ref="defaultSelected?'mytable':''"
               height="690">
@@ -27,7 +26,7 @@
                        @click="handleDelete(scope.row)">删除<i class="el-icon-delete" /></el-button>
             <el-button type="text"
                        size="small"
-                       @click="handlePermissionAssignmen(scope.row)">权限分配<i class="el-icon-delete" /></el-button>
+                       @click="handlePermissionAssignmen(scope.row)">权限分配<i class="el-icon-s-operation" /></el-button>
             <!-- <el-button type="text"
                        size="small"
                        @click="handleUserBinding(scope.row)">用户绑定<i class="el-icon-delete" /></el-button> -->
@@ -83,18 +82,18 @@ export default {
     }
 
   },
-  data() {
+  data () {
     return {
       Appdata: [], // user 表的data数据
       tableData: [],
     }
   },
-  mounted() {
+  mounted () {
     this.findPageList(this.params)
   },
   methods: {
     /**获取数据列表 */
-    findPageList(data) {
+    findPageList (data) {
       let getData = JSON.stringify(data);
       findPageListApi({ params: getData }).then(response => {
         if (response.status === 0) {
@@ -104,40 +103,34 @@ export default {
       })
     },
     //搜索成功传过来的数据
-    searchData(data) {
+    searchData (data) {
       this.tableData = data
     },
     /** 点击修改**/
-    handleUpdate(data) {
+    handleUpdate (data) {
       this.$emit('handleUpdate', data)
     },
     /** 点击删除**/
-    handleDelete(data) {
+    handleDelete (data) {
       this.$emit('handleDelete', data)
     },
     /*权限分配*/
-    handlePermissionAssignmen(data) {
+    handlePermissionAssignmen (data) {
       this.$emit('handlePermissionAssignmen', data)
     },
     /**用户绑定 */
-    handleUserBinding(data) {
+    handleUserBinding (data) {
       this.$emit('handleUserBinding', data)
     },
     /**排序 */
-    sortChange(column) {
+    sortChange (column) {
       let params = JSON.parse(JSON.stringify(this.params));
       let order = column.order === 'ascending' ? 'asc' : 'desc'
       params.sort = {}
       params.sort[column.prop] = order
       this.findPageList(params)
     },
-    //勾选中的数据
-    handleSelectionChange(val) {
-      let idArr = val.map(item => {
-        return item[this.idKey]  //根据当前模块需要的id进行修改
-      })
-      this.$emit("handleSelectionChange", idArr)
-    }
+
   },
 
 }

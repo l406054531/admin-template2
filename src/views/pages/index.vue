@@ -2,8 +2,8 @@
   <div class="content">
     <div class="wrapper">
       <el-button type="success"
-                 @click="handleAdd"
-                 size="small">新增一级菜单</el-button>
+                 size="small"
+                 @click="handleAdd">新增一级菜单</el-button>
       <div class="tree">
         <el-tree ref="tree"
                  :data="treeData"
@@ -69,7 +69,7 @@ import { findAllListApi, addListApi, deleteListApi, updateListApi } from "@/api/
 import { formatTree } from "@/utils"
 export default {
   components: {},
-  data() {
+  data () {
     return {
       name: "页面管理",
       treeData: [],
@@ -97,17 +97,17 @@ export default {
       idParent: 0,
     };
   },
-  mounted() {
+  mounted () {
     this.findAllList()
   },
   methods: {
     /**弹出框取消按钮*/
-    handleCloseDialog() {
+    handleCloseDialog () {
       this.dialogFormVisible = false;
       this.register()
     },
     /**重置表单 */
-    register(flag = true) {
+    register (flag = true) {
       this.dialogFormModel = {}
       this.dialogFormElement.forEach((item) => {
         this.$set(this.dialogFormModel, item.prop, "");
@@ -117,7 +117,7 @@ export default {
       }
     },
     /**弹出框确定按钮*/
-    handleDialogSubmit() {
+    handleDialogSubmit () {
       let flag = this.$refs["myform"].validateForm();
       if (flag) {
         switch (this.dialogTitle) {
@@ -133,20 +133,20 @@ export default {
       }
     },
     /**点击新增一级菜单按钮 */
-    handleAdd() {
+    handleAdd () {
       this.dialogFormVisible = true
       this.dialogTitle = "新增"
       this.idParent = 0
     },
 
     /**新增子节点 */
-    handleNode(data) {
+    handleNode (data) {
       this.dialogFormVisible = true
       this.dialogTitle = "新增"
       this.idParent = data.idPage
     },
     /*删除节点*/
-    handleDelete(node, data) {
+    handleDelete (node, data) {
       this.$confirm("此操作将把这条数据删除, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -175,7 +175,7 @@ export default {
         .catch();
     },
     /**编辑节点 */
-    handleEdit(data) {
+    handleEdit (data) {
       this.dialogTitle = "编辑"
       this.register(false)
       for (let item of this.dialogFormElement) {
@@ -184,7 +184,7 @@ export default {
       this.dialogFormVisible = true;
     },
     /**获取所有的页面--异步请求 */
-    findAllList() {
+    findAllList () {
       findAllListApi().then(response => {
         this.allPageList = response.data
         this.treeData = formatTree(response.data, "idParent", "idPage")
@@ -192,7 +192,7 @@ export default {
       })
     },
     /**新增--异步请求 */
-    saveData() {
+    saveData () {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       postData.idParent = this.idParent
       addListApi(postData).then(response => {
@@ -208,7 +208,7 @@ export default {
       })
     },
     /**编辑--异步操作 */
-    updateData() {
+    updateData () {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       updateListApi(postData).then(response => {
         if (response.status === 0) {

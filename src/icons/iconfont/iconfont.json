@@ -1,0 +1,51 @@
+{
+  "id": "2648610",
+  "name": "admin-template",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "3824018",
+      "name": "用户",
+      "font_class": "yonghu",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "5004751",
+      "name": "密码",
+      "font_class": "mima",
+      "unicode": "e64c",
+      "unicode_decimal": 58956
+    },
+    {
+      "icon_id": "14444479",
+      "name": "用户",
+      "font_class": "yonghu1",
+      "unicode": "e6fe",
+      "unicode_decimal": 59134
+    },
+    {
+      "icon_id": "14444595",
+      "name": "管理",
+      "font_class": "guanli",
+      "unicode": "e701",
+      "unicode_decimal": 59137
+    },
+    {
+      "icon_id": "16837985",
+      "name": "元数据管理",
+      "font_class": "yuanshujuguanli",
+      "unicode": "e603",
+      "unicode_decimal": 58883
+    },
+    {
+      "icon_id": "21204649",
+      "name": "首页",
+      "font_class": "shouye",
+      "unicode": "e60d",
+      "unicode_decimal": 58893
+    }
+  ]
+}

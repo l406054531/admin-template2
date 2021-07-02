@@ -1,96 +1,82 @@
 <template>
-  <div class="login-container">
-    <el-form
-      :model="loginForm"
-      :rules="loginRules"
-      ref="loginForm"
-      class="login-form"
-    >
-      <div class="login-title">
-        <h2>欢迎登录</h2>
-      </div>
-      <el-form-item prop="username">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          v-model="loginForm.username"
-          placeholder="请输入用户名"
-        ></el-input>
+  <div class="login-form">
+    <div class="my-img">
+      <img src="@/assets/img/user.png"
+           alt="">
+    </div>
+    <el-form ref="loginForm"
+             :model="loginForm"
+             :rules="loginRules">
+      <el-form-item prop="loginName">
+        <el-input v-model="loginForm.loginName"
+                  placeholder="用户名">
+          <i slot="prefix"
+             class="iconfont icon-yonghu"></i>
+        </el-input>
       </el-form-item>
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          ref="password"
-          :key="passwordType"
-          :type="passwordType"
-          v-model="loginForm.password"
-          placeholder="请输入密码"
-        ></el-input>
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon
-            :icon-class="passwordType === 'password' ? 'eye-close' : 'eye-open'"
-          />
-        </span>
+
+      <el-form-item prop="loginPwd">
+        <el-input v-model="loginForm.loginPwd"
+                  placeholder="密码"
+                  show-password
+                  @keyup.enter.native="handleLogin('loginForm')">
+          <i slot="prefix"
+             class="iconfont icon-mima"></i>
+        </el-input>
       </el-form-item>
+
       <el-form-item>
-        <el-button
-          type="primary"
-          :loading="loading"
-          @click="handleLogin('loginForm')"
-          >登 录</el-button
-        >
+        <el-button :loading="loading"
+                   @click="handleLogin('loginForm')">登 录</el-button>
+
       </el-form-item>
     </el-form>
+
   </div>
 </template>
 
 <script>
-/**
- * @description: 登录组件
- * @author: lct
- * @date: 2020/7/8 9:18
- */
+
 export default {
   name: "login-form",
-  data() {
+  data () {
     return {
       loginForm: {
-        username: "lxxx", // qhzx01
-        password: "123456", // 123456
+        username: "lxxx",
+        password: "123456",
       },
       loginRules: {
-        username: [
+        loginName: [
           { required: true, message: "用户名不能为空", trigger: "blur" },
+
         ],
-        password: [
+        loginPwd: [
           {
             required: true,
-            message: "密码不能少于6位",
-            min: 6,
+            message: "密码不能为空",
+            // min: 6,
             trigger: "blur",
           },
         ],
       },
       passwordType: "password",
       loading: false,
+      SlideVerifyShow: false
     };
   },
-  mounted() {
-    document.addEventListener("keydown", (e) => {
-      let key = window.event.keyCode;
-      if (key == 13) {
-        this.handleLogin("loginForm");
-      }
-    });
+  mounted () {
+    // document.addEventListener("keydown", (e) => {
+    //   let key = window.event.keyCode;
+    //   if (key == 13) {
+    //     this.handleLogin("loginForm");
+    //   }
+    // });
   },
   methods: {
     /**
      * 密码显隐
      */
-    showPwd() {
+    showPwd () {
       if (this.passwordType === "password") {
         this.passwordType = "";
       } else {
@@ -103,7 +89,7 @@ export default {
     /**
      * 登录
      */
-    handleLogin(formName) {
+    handleLogin (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.loading = true;
@@ -112,7 +98,7 @@ export default {
             .then(() => {
               this.$router.push("/");
               this.loading = false;
-            //   window.location.reload();
+              //   window.location.reload();
             })
             .catch(() => {
               this.loading = false;
@@ -124,87 +110,84 @@ export default {
         }
       });
     },
+
+
   },
 };
 </script>
-
 <style lang="scss" scoped>
-.login-container {
-  width: 440px;
-  height: 360px;
-  padding: 20px 50px;
-  border-radius: 6px;
-
-  .login-title {
-  }
-
-  .login-form {
-    .svg-container {
-      position: absolute;
-      top: 14px;
-      left: 15px;
-      z-index: 999;
-      font-size: 16px;
-      color: #d7dee3;
-      cursor: pointer;
-      user-select: none;
-    }
-    .show-pwd {
-      position: absolute;
-      top: 14px;
-      right: 25px;
-      font-size: 16px;
-      color: $font-color-base;
-      cursor: pointer;
-      user-select: none;
-    }
-  }
-
-  ::v-deep {
-    .el-form-item {
-      padding-right: 0;
-      margin: 30px 0;
-      color: #454545;
-      background: transparent;
-      border: 1px solid transparent;
-      border-radius: 2px;
-
-      &__content {
-        min-height: 32px;
-        line-height: 32px;
-      }
-
-      &__error {
-        position: absolute;
-        top: 100%;
-        left: 18px;
-        font-size: $font-size-small;
-        line-height: 18px;
-        color: $font-color-red;
-      }
-    }
-
-    .el-input {
-      box-sizing: border-box;
-
-      input {
-        height: 58px;
-        padding-left: 45px;
-        font-size: $font-size-medium;
-        line-height: 58px;
-        color: $font-color-grey;
-        background: #f6f4fc;
-        border: 0;
-        caret-color: $font-color-grey;
-      }
-    }
-
-    .el-button {
+$btnColot: #a2d1f5; //#90caf9  #bbdefb  #a2d1f5
+.login-form {
+  width: 20%;
+  position: absolute;
+  left: 40%;
+  top: 10%;
+  z-index: 3;
+  padding: 20px;
+  //   border: 1px solid red;
+  //   border-radius: 5px;
+  .my-img {
+    width: 100px;
+    margin: 0 auto;
+    img {
       width: 100%;
-      height: 50px;
-      margin-top: 5px;
-      border: 0;
+      border-radius: 50%;
     }
   }
+  .el-form {
+    padding-top: 20px;
+    ::v-deep {
+      .el-input__inner {
+        color: #fff;
+        border-radius: 30px;
+        height: 45px;
+        padding: 0 15px 0 38px;
+        border: 0;
+        background: rgba(255, 127, 80, 0.9);
+        &::-webkit-input-placeholder {
+          //placeholder颜色
+          color: rgba(255, 255, 255, 0.8);
+        }
+      }
+      .el-input__clear {
+        color: #fff;
+      }
+      .el-button {
+        width: 100%;
+        height: 45px;
+        color: #fff;
+        border-radius: 30px;
+        border: 0;
+        background: rgba(255, 127, 80, 0.9);
+        //   &:hover {
+        //     color: #000;
+        //   }
+      }
+      .el-input__prefix {
+        /**输入框图标 */
+        padding-top: 4px;
+        padding-left: 10px;
+        color: #fff;
+      }
+      .el-link.el-link--default {
+        color: #fff;
+        margin-left: 5px;
+        //   &:hover {
+        //     color: #000;
+        //   }
+      }
+    }
+  }
+}
+.slide-fade-enter-active {
+  transition: all 0.4s ease;
+}
+.slide-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
 }
 </style>

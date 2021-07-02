@@ -1,10 +1,8 @@
 <template>
   <div class="main">
-
     <div class="type">
-      <el-button type="primary"
+      <el-button type="success"
                  size="small"
-                 plain
                  @click="typeManageClick">类型管理</el-button>
     </div>
     <div class="menu"
@@ -24,9 +22,8 @@
     </div>
     <div class="table">
       <div class="add">
-        <el-button type="primary"
+        <el-button type="success"
                    size="small"
-                   plain
                    @click="addBtnClick">{{addTtile}}</el-button>
       </div>
       <my-table ref="table"
@@ -76,7 +73,7 @@ import myTable from './module/table';
 import { findAllMetadataTypeList, deleteMetadataTypeListApi, addListApi, deleteListApi } from "@/api/metadata"
 export default {
   components: { myTable },
-  data() {
+  data () {
     return {
       menuDataList: [], //左侧选项
       activeLink: '',//活跃的导航
@@ -105,10 +102,16 @@ export default {
       multipleSelection: [],//勾选的数据
       dialogTitle: "",//弹出框标题
       dialogFormVisible: false,//弹出框状态
-      typeRules: {},//新增类型的表单验证
+      typeRules: {//新增类型的表单验证
+        typeName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        typeField: [{ required: true, message: '请输入代码', trigger: 'blur' }],
+      },
       typeDialogFormElement: [{ label: '名称', prop: 'typeName', type: 'input' }, { label: '代码', prop: 'typeField', type: 'input' }],//新增类型的表单元素
       typeDialogFormModel: {},//新增类型的双向绑定
-      dataRules: {},//新增数据的表单验证
+      dataRules: {//新增数据的表单验证
+        elementName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
+        elementValue: [{ required: true, message: '请输入值', trigger: 'blur' }],
+      },
       dataDialogFormElement: [{ label: '名称', prop: 'elementName', type: 'input' }, { label: '值', prop: 'elementValue', type: 'input' }],//新增数据的表单元素
       dataDialogFormModel: {},//新增数据的双向绑定
       addTtile: '新增数据',//新增按钮的标题
@@ -119,40 +122,37 @@ export default {
     };
   },
   computed: {
-    rules() {
+    rules () {
       return this.addTtile === '新增类型' ? this.typeRules : this.dataRules
     },
-    dialogFormElement() {
+    dialogFormElement () {
       return this.addTtile === '新增类型' ? this.typeDialogFormElement : this.dataDialogFormElement
     },
-    // dialogFormModel() {
-    //   return this.addTtile === '新增类型' ? this.typeDialogFormModel : this.dataDialogFormModel
-    // },
-    tableHeader() {
+    tableHeader () {
       return this.addTtile === '新增类型' ? this.typeTableHeader : this.dataTableHeader
     },
-    url() {
+    url () {
       return this.addTtile === '新增类型' ? "metadataType" : "metadataElement"
     }
   },
   watch: {
     addTtile: {
-      handler(val) {
+      handler (val) {
         this.dialogFormModel = val === '新增类型' ? this.typeDialogFormModel : this.dataDialogFormModel
       },
       deep: true,
       immediate: true
     }
   },
-  mounted() {
+  mounted () {
     this.findAllMetadataTypeList()
   },
   methods: {
-    emitTableData(v) {
+    emitTableData (v) {
       this.total = v.total
       this.tableData = v.data
     },
-    activeLinkClick(item) {
+    activeLinkClick (item) {
       this.addTtile = "新增数据"
       this.dialogTitle = "新增"
       this.activeLink = item.typeField
@@ -160,7 +160,7 @@ export default {
       this.tableKey = Math.random() * 100 + new Date()
     },
     /**操作页码 */
-    handleSizeChange(paginationInfo) {
+    handleSizeChange (paginationInfo) {
       this.params.pageNum = paginationInfo.currentPage;
       this.params.pageSize = paginationInfo.pagesize;
       this.paginationInfo.currentPage = paginationInfo.currentPage;
@@ -168,22 +168,22 @@ export default {
       this.tableKey = Math.random() * 100 + new Date();
     },
     /**勾选的数据 */
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.multipleSelection = val
     },
-    returnMessage(msg) {
+    returnMessage (msg) {
       return this.$message({
         type: "warning",
         message: msg,
       });
     },
     /**弹出框取消按钮*/
-    handleCloseDialog() {
+    handleCloseDialog () {
       this.dialogFormVisible = false;
       this.register()
     },
     /**重置表单 */
-    register(flag = true) {
+    register (flag = true) {
       this.dialogFormModel = {}
       this.dialogFormElement.forEach((item) => {
         this.$set(this.dialogFormModel, item.prop, "");
@@ -193,7 +193,7 @@ export default {
       }
     },
     /**弹出框确定按钮 */
-    handleDialogSubmit() {
+    handleDialogSubmit () {
       let flag = this.$refs["myform"].validateForm();
       if (flag) {
         switch (this.dialogTitle) {
@@ -209,18 +209,18 @@ export default {
       }
     },
     /**类型管理的点击事件 */
-    typeManageClick() {
+    typeManageClick () {
       this.addTtile = '新增类型'
       this.tableKey = Math.random() * 100 + new Date()
 
     },
     /**新增数据按钮的点击事件 */
-    addBtnClick() {
+    addBtnClick () {
       this.dialogFormVisible = true
       this.dialogTitle = "新增"
     },
     /**查询元数据所有类别 */
-    findAllMetadataTypeList() {
+    findAllMetadataTypeList () {
       findAllMetadataTypeList().then(response => {
         if (response.status === 0) {
           this.metadataTypeList = response.data
@@ -236,7 +236,7 @@ export default {
       })
     },
     /**点击删除按钮 */
-    handleDelete(row) {
+    handleDelete (row) {
       //   deleteListApi
       this.$confirm("此操作将把这条数据删除, 是否继续?", "提示", {
         confirmButtonText: "确定",
@@ -272,7 +272,7 @@ export default {
         .catch();
     },
     /**点击编辑按钮 */
-    handleUpdate(row) {
+    handleUpdate (row) {
       this.dialogTitle = "编辑"
       this.register(false)
       //赋值
@@ -282,7 +282,7 @@ export default {
       this.dialogFormVisible = true;
     },
     /**新增--异步请求 */
-    saveData() {
+    saveData () {
       if (this.url == 'metadataElement') {
         this.dialogFormModel.typeField = this.activeLink
       }
@@ -315,6 +315,9 @@ export default {
     left: 2%;
     top: 5%;
   }
+  .el-button {
+    margin-top: 10px;
+  }
   .menu {
     width: 13%;
     max-height: 760px;
@@ -322,7 +325,7 @@ export default {
     overflow: auto;
     border: 1px solid #dfe6ec;
     border-radius: 8px;
-    margin: 50px 20px 0 20px;
+    margin: 60px 20px 0 20px;
     padding: 10px 20px 20px;
     // padding-top: 15px;
     float: left;
@@ -336,7 +339,7 @@ export default {
   }
   .table {
     float: left;
-    margin-top: 50px;
+    margin-top: 60px;
     width: 84%;
     .add {
       position: absolute;

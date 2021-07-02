@@ -12,13 +12,13 @@ export default {
       default: ''
     }
   },
-  render(h, context) {
+  render (h, context) {
     const { icon, title } = context.props
     const vnodes = []
 
     if (icon) {
-      //   vnodes.push(<svg-icon icon-class={icon}/>)
-      vnodes.push(<i class={icon} style="margin-left:10px" />)
+      let i = "iconfont " + icon
+      vnodes.push(<i class={i} style="padding: 10px;" />)
     }
 
     if (title) {

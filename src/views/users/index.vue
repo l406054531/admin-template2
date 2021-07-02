@@ -6,33 +6,12 @@
         <button-groud @add="handleAdd"
                       @refresh="handleRefresh" />
         <div class="search-block">
-          <!-- <span>名称:</span>
-          <el-input placeholder="请输入名称"
-                    v-model="search.name"
-                    @clear="handleSearch"
-                    clearable>
-          </el-input>
-          <span>类别:</span>
-          <el-select v-model="search.type"
-                     placeholder="请选择"
-                     filterable
-                     clearable
-                     @clear="handleSearch">
-            <el-option v-for="item in portInfoList"
-                       :key="item.value"
-                       :label="item.label"
-                       :value="item.label">
-            </el-option>
-          </el-select>
-          <el-button icon="el-icon-search"
-                     @click="handleSearch"
-                     circle></el-button> -->
         </div>
 
       </div>
       <!-- 表格 -->
       <div class="main">
-        <!-- handleUpdate 修改 handleDelete删除  tableDataList 表格数据  handleSelectionChange 勾选中的数据  -->
+        <!-- handleUpdate 修改 handleDelete删除  tableDataList 表格数据 -->
         <div class="table">
           <my-table :tableHeader="tableHeader"
                     :params="tableParams"
@@ -41,7 +20,6 @@
                     @handleUpdate="handleUpdate"
                     @handleDelete="handleDelete"
                     @tableDataList="tableDataList"
-                    @handleSelectionChange="handleSelectionChange"
                     style="margin-bottom: 20px"
                     ref="mytableRef" />
         </div>
@@ -91,7 +69,7 @@ import { findAllList } from '@/api/roles.js'; //异步方法
 export default {
   components: { myTable },
   //   name:"角色管理",
-  data() {
+  data () {
     return {
       tableHeader: [ //表格头部
         // { label: '', prop: '', type: 'selection' },
@@ -137,25 +115,24 @@ export default {
         { label: '', prop: 'idUser', type: 'id' },
       ],
       search: {
-        roleName: '',//搜索输入的名称
-        type: ''//搜索输入的类别
+
       },
       multipleSelection: [],//勾选框选择的内容
       idKey: 'idUser',
     };
   },
-  mounted() {
+  mounted () {
     this.findAllRoleList()
   },
   methods: {
     /**点击新增 */
-    handleAdd() {
+    handleAdd () {
       this.dialogTitle = '新增';
       this.dialogFormElement = this.addDialogFormElement
       this.dialogFormVisible = true;
     },
     /**点击刷新 */
-    handleRefresh() {
+    handleRefresh () {
       this.tableParams.pageNum = 1;
       this.tableParams.pageSize = 20;
       this.paginationInfo.currentPage = 1;
@@ -163,7 +140,7 @@ export default {
       this.tableKey = Math.random() * 100 + new Date();
     },
     /**点击表格修改 */
-    handleUpdate(data) {
+    handleUpdate (data) {
       this.dialogTitle = '编辑';
       this.dialogFormElement = this.editDialogFormElement
       this.register(false)
@@ -173,18 +150,15 @@ export default {
       }
       this.dialogFormVisible = true;
     },
-    /**已勾选的数据 */
-    handleSelectionChange(val) {
-      this.multipleSelection = val
-    },
+
     /**表格数据总条数 */
-    tableDataList(data) {
+    tableDataList (data) {
       this.total = data.total
       this.size = data.size
       this.tableData = data.data
     },
     /**分页变动时 */
-    handleSizeChange(paginationInfo) {
+    handleSizeChange (paginationInfo) {
       this.tableParams.pageNum = paginationInfo.currentPage;
       this.tableParams.pageSize = paginationInfo.pagesize;
       this.paginationInfo.currentPage = paginationInfo.currentPage;
@@ -192,12 +166,12 @@ export default {
       this.tableKey = Math.random() * 100 + new Date();
     },
     /**弹出框取消按钮*/
-    handleCloseDialog() {
+    handleCloseDialog () {
       this.dialogFormVisible = false;
       this.register()
     },
     /**重置表单 */
-    register(flag = true) {
+    register (flag = true) {
       this.dialogFormModel = {}
       this.dialogFormElement.forEach((item) => {
         this.$set(this.dialogFormModel, item.prop, "");
@@ -207,7 +181,7 @@ export default {
       }
     },
     /**点击表格删除--异步请求 */
-    handleDelete(data) {
+    handleDelete (data) {
       this.$confirm("此操作将把这条数据放进回收站, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -236,7 +210,7 @@ export default {
         .catch();
     },
     /**新增数据-异步请求 */
-    saveData() {
+    saveData () {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       let obj = JSON.parse(JSON.stringify(postData))  //因为postData可能还会进行别的操作   所以重新定义一个obj
       addListApi(postData).then(response => {
@@ -262,7 +236,7 @@ export default {
       })
     },
     /**修改数据-异步请求 */
-    updateData() {
+    updateData () {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       updateListApi(postData).then(response => {
         if (response.status === 0) {
@@ -281,29 +255,18 @@ export default {
       })
     },
     /**搜索--异步请求 */
-    handleSearch() {
+    handleSearch () {
       let params = {}
       params.pageNum = 1
       params.pageSize = this.paginationInfo.pagesize
       params.query = {}
-      if (this.search.name != "") {
-        params.query.name = this.search.name
-      }
-      if (this.search.type != "") {
-        params.query.type = this.search.type
-      }
+
       this.tableParams.query = params.query
       this.$refs.mytableRef.findPageList(params)
     },
-    /**批量删除--异步请求 */
-    handleBatchDelete() {
-      if (this.multipleSelection.length === 0) return this.$message({ type: 'warning', message: '请勾选需要删除的数据' })
-      deleteBatchList(this.url, this.multipleSelection).then(() => {
-        this.tableKey = Math.random() * 100 + new Date();
-      })
-    },
+
     /**弹出框确定按钮*/
-    handleDialogSubmit() {
+    handleDialogSubmit () {
       let flag = this.$refs["myform"].validateForm();
       if (flag) {
         switch (this.dialogTitle) {
@@ -318,8 +281,7 @@ export default {
         return false;
       }
     },
-    findAllRoleList() {
-
+    findAllRoleList () {
       findAllList().then(response => {
         if (response.status === 0) {
           let arr = response.data.map(item => {

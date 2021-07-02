@@ -23,6 +23,13 @@
   position: relative;
   margin: 0 auto;
 }
+.el-table th {
+  background-color: #eef4ff !important;
+
+  >.cell {
+    color: #88be00;
+  }
+}
 
 // refine element ui upload
 .upload-container {

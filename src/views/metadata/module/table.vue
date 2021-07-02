@@ -2,7 +2,7 @@
   <div>
     <el-table :data="tableData"
               border
-              style=" min-height: 730px"
+              style="min-height: 730px"
               highlight-current-row
               :cell-style="{padding: '4px'}"
               :ref="defaultSelected?'mytable':''"
@@ -88,12 +88,12 @@ export default {
       type: String
     }
   },
-  data() {
+  data () {
     return {
       tableData: [],
     }
   },
-  mounted() {
+  mounted () {
     if (this.url == 'metadataType') {
       this.findAllList({}, this.url)
     } else {
@@ -102,7 +102,7 @@ export default {
   },
   methods: {
     /**获取数据列表 */
-    findPageList(data) {
+    findPageList (data) {
       let getData = JSON.stringify(data);
       findAllMetadataElementList({ params: getData }).then(response => {
         if (response.status === 0) {
@@ -112,7 +112,7 @@ export default {
         }
       })
     },
-    findAllList(data, url) {
+    findAllList (data, url) {
       let getData = JSON.stringify(data);
       findAllList({ params: getData }, url).then(response => {
         if (response.status === 0) {
@@ -121,14 +121,14 @@ export default {
         }
       })
     },
-    parentEmitData(data) {
+    parentEmitData (data) {
       this.tableData = data
     },
     /**点击删除 */
-    handleDelete(row) {
+    handleDelete (row) {
       this.$emit('handleDelete', row)
     },
-    handleUpdate(row) {
+    handleUpdate (row) {
       this.$emit('handleUpdate', row)
     }
   },
