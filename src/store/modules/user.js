@@ -6,6 +6,7 @@ const state = {
     userInfo: getUserInfo(),
     isLogin: false,
     routes: null,
+    name: "",
 }
 const mutations = {
     SET_TOKEN(state, token) {
@@ -13,6 +14,9 @@ const mutations = {
     },
     USER_INFO(state, data) {
         state.userInfo = data
+    },
+    SET_NAME(state, name) {
+        state.name = name
     },
     SET_isLogin(state, isLogin) {
         state.isLogin = isLogin
@@ -26,6 +30,7 @@ const actions = {
         return new Promise((resolve, reject) => {
             login(usetInfo).then(response => {
                 let { token, menu, data } = response
+                commit("SET_NAME", data.nickname)
                 menu = JSON.stringify(formatTree(menu, "idParent", "idPage"));
                 data = JSON.stringify(data);
                 commit("SET_TOKEN", token)

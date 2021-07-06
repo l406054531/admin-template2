@@ -8,7 +8,7 @@
              :model="loginForm"
              :rules="loginRules">
       <el-form-item prop="loginName">
-        <el-input v-model="loginForm.loginName"
+        <el-input v-model="loginForm.username"
                   placeholder="用户名">
           <i slot="prefix"
              class="iconfont icon-yonghu"></i>
@@ -16,7 +16,7 @@
       </el-form-item>
 
       <el-form-item prop="loginPwd">
-        <el-input v-model="loginForm.loginPwd"
+        <el-input v-model="loginForm.password"
                   placeholder="密码"
                   show-password
                   @keyup.enter.native="handleLogin('loginForm')">
@@ -46,11 +46,10 @@ export default {
         password: "123456",
       },
       loginRules: {
-        loginName: [
+        username: [
           { required: true, message: "用户名不能为空", trigger: "blur" },
-
         ],
-        loginPwd: [
+        password: [
           {
             required: true,
             message: "密码不能为空",
