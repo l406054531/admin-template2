@@ -1,11 +1,3 @@
-/*
- * @Author: your name
- * @Date: 2021-02-02 11:36:57
- * @LastEditTime: 2021-04-07 13:15:22
- * @LastEditors: Please set LastEditors
- * @Description: In User Settings Edit
- * @FilePath: \vue-cli4.x-project-template\vue.config.js
- */
 'use strict'
 const path = require('path')
 const defaultConfigs = require('./src/config.js')
@@ -41,40 +33,40 @@ module.exports = {
      * */
     productionSourceMap: false,
 
-    pwa: {
-        iconPaths: {
-            favicon32: './logo.png',
-            favicon16: './logo.png',
-            appleTouchIcon: './logo.png',
-            maskIcon: './logo.png',
-            msTileImage: './logo.png'
-        }
-    },
+    // pwa: {
+    //     iconPaths: {
+    //         favicon32: './logo.png',
+    //         favicon16: './logo.png',
+    //         appleTouchIcon: './logo.png',
+    //         maskIcon: './logo.png',
+    //         msTileImage: './logo.png'
+    //     }
+    // },
 
     // 开发服务配置
-    devServer: {
-        port: port,
-        open: false,
-        overlay: {
-            warnings: false,
-            errors: false
-        },
-        proxy: {
-            '/api': {
-                target: 'http://192.168.1.25:3004',
-                changeOrigin: true,
-                pathRewrite: {
-                    '^/api': ''
-                }
-            },
-            '/socket.io': {
-                target: 'http://127.0.0.1:3000',
-                ws: true,
-                changeOrigin: true
-            },
+    // devServer: {
+    //     port: port,
+    //     open: false,
+    //     overlay: {
+    //         warnings: false,
+    //         errors: false
+    //     },
+    //     proxy: {
+    //         '/api': {
+    //             target: 'http://192.168.1.25:3004',
+    //             changeOrigin: true,
+    //             pathRewrite: {
+    //                 '^/api': ''
+    //             }
+    //         },
+    //         '/socket.io': {
+    //             target: 'http://127.0.0.1:3000',
+    //             ws: true,
+    //             changeOrigin: true
+    //         },
 
-        }
-    },
+    //     }
+    // },
 
     configureWebpack: {
         name: name,

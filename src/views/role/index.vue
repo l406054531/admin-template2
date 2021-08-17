@@ -5,13 +5,39 @@
       <div style="margin-bottom:10px">
         <button-groud @add="handleAdd"
                       @refresh="handleRefresh" />
+        <!-- 
+        <excelButton :url="url"
+                     @handleExprotExcel="handleExprotExcel"
+                     @hanldeImportExcel="hanldeImportExcel"></excelButton> -->
+
         <div class="search-block">
+          <!-- <span>名称:</span>
+          <el-input placeholder="请输入名称"
+                    v-model="search.name"
+                    @clear="handleSearch"
+                    clearable>
+          </el-input>
+          <span>类别:</span>
+          <el-select v-model="search.type"
+                     placeholder="请选择"
+                     filterable
+                     clearable
+                     @clear="handleSearch">
+            <el-option v-for="item in portInfoList"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.label">
+            </el-option>
+          </el-select>
+          <el-button icon="el-icon-search"
+                     @click="handleSearch"
+                     circle></el-button> -->
         </div>
 
       </div>
       <!-- 表格 -->
       <div class="main">
-        <!-- handleUpdate 修改 handleDelete删除  tableDataList 表格数据 -->
+        <!-- handleUpdate 修改 handleDelete删除  tableDataList 表格数据  handleSelectionChange 勾选中的数据  -->
         <div class="table">
           <my-table :tableHeader="tableHeader"
                     :params="tableParams"
@@ -20,6 +46,8 @@
                     @handleUpdate="handleUpdate"
                     @handleDelete="handleDelete"
                     @tableDataList="tableDataList"
+                    @handlePermissionAssignmen="handlePermissionAssignmen"
+                    @handleSelectionChange="handleSelectionChange"
                     style="margin-bottom: 20px"
                     ref="mytableRef" />
         </div>
@@ -55,6 +83,14 @@
         </div>
       </el-dialog>
 
+      <el-drawer title="权限分配"
+                 size="20%"
+                 :visible.sync="drawer"
+                 :direction="direction">
+        <tree :currentRoleInfo="currentRoleInfo"
+              v-if="drawer" />
+      </el-drawer>
+
     </div>
   </div>
 
@@ -63,23 +99,22 @@
 <script>
 
 import myTable from './module/table';  //表格
-import { addListApi, deleteListApi, updateListApi } from '@/api/user.js'; //异步方法
-import { findAllList } from '@/api/roles.js'; //异步方法
+import tree from './module/tree.vue';  //表格
+import { addListApi, deleteListApi, updateListApi } from '@/api/roles.js'; //异步方法
 
 export default {
-  components: { myTable },
+  components: { myTable, tree },
   //   name:"角色管理",
   data () {
     return {
       tableHeader: [ //表格头部
         // { label: '', prop: '', type: 'selection' },
         { label: '-', prop: 'index', type: 'index' },
-        { label: '用户账号', prop: 'username' },
-        { label: '用户名称', prop: 'nickname' },
-        { label: '角色', prop: 'role' },
+        { label: '角色字段', prop: 'roleField' },
+        { label: '角色名称', prop: 'roleName' },
         { label: '操作', prop: 'operation', width: "80" },
       ],
-      tableParams: { pageNum: 1, pageSize: 20, query: {} },  //表格请求参数
+      tableParams: { pageNum: 1, pageSize: 20},  //表格请求参数
       tableKey: null,  //表格Key
       total: 0,   //数据总条数
       tableData: [],//表格数据
@@ -92,43 +127,35 @@ export default {
       dialogTitle: '新增',  //弹出框头部标题
       dialogFormVisible: false,  //弹出框状态
       rules: {   //表单验证
-        username: [{ required: true, message: '请输入用户账号', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入用户密码', trigger: 'blur' }],
-        nickname: [{ required: true, message: '请输入用户名称', trigger: 'blur' }],
-        role: [{ required: true, message: '请选择角色', trigger: 'blur' }],
+        roleField: [{ required: true, message: '请输入字段', trigger: 'blur' }],
+        roleName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
         // longitude: [{ validator: longitudeCheck, trigger: 'change' }],
       },
       dialogFormModel: {}, //表单双向绑定
       dialogFormElement: [  //表单元素
-      ],
-      addDialogFormElement: [  //表单元素
-        { label: '用户账号', prop: 'username', type: 'input' },
-        { label: '用户密码', prop: 'password', type: 'input' },
-        { label: '用户名称', prop: 'nickname', type: 'input' },
-        { label: '角色', prop: 'role', type: 'select', selectLabel: 'elementName', selectValue: 'elementValue', typeselects: [] },
-        { label: '', prop: 'idUser', type: 'id' },
-      ],
-      editDialogFormElement: [  //表单元素
-        { label: '用户账号', prop: 'username', type: 'input' },
-        { label: '用户名称', prop: 'nickname', type: 'input' },
-        { label: '角色', prop: 'role', type: 'select', selectLabel: 'elementName', selectValue: 'elementValue', typeselects: [] },
-        { label: '', prop: 'idUser', type: 'id' },
+        { label: '角色字段', prop: 'roleField', type: 'input' },
+        { label: '角色名称', prop: 'roleName', type: 'input' },
+        { label: '', prop: 'idRole', type: 'id' },
       ],
       search: {
 
       },
       multipleSelection: [],//勾选框选择的内容
-      idKey: 'idUser',
+      idKey: 'idRole',
+
+      drawer: false,//抽屉状态
+      direction: 'rtl',//抽屉方向
+      currentRoleInfo: {},//点击权限分配后的当前条角色的信息
+
     };
   },
   mounted () {
-    this.findAllRoleList()
+
   },
   methods: {
     /**点击新增 */
     handleAdd () {
       this.dialogTitle = '新增';
-      this.dialogFormElement = this.addDialogFormElement
       this.dialogFormVisible = true;
     },
     /**点击刷新 */
@@ -142,7 +169,6 @@ export default {
     /**点击表格修改 */
     handleUpdate (data) {
       this.dialogTitle = '编辑';
-      this.dialogFormElement = this.editDialogFormElement
       this.register(false)
       //赋值
       for (let item of this.dialogFormElement) {
@@ -150,7 +176,10 @@ export default {
       }
       this.dialogFormVisible = true;
     },
-
+    /**已勾选的数据 */
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+    },
     /**表格数据总条数 */
     tableDataList (data) {
       this.total = data.total
@@ -180,9 +209,14 @@ export default {
         this.$refs['myform'].$refs['myform'].resetFields();
       }
     },
+    /** 点击权限分配 */
+    handlePermissionAssignmen (data) {
+      this.currentRoleInfo = data
+      this.drawer = true
+    },
     /**点击表格删除--异步请求 */
     handleDelete (data) {
-      this.$confirm("此操作将把这条数据放进回收站, 是否继续?", "提示", {
+      this.$confirm("此操作将把这条数据删除, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
@@ -193,7 +227,7 @@ export default {
           let postData = {}
           postData[this.idKey] = data[this.idKey]
           deleteListApi(postData).then((response) => {
-            if (response.status === 0) {
+            if (response.statusCode === 200) {
               this.$message({
                 type: "success",
                 message: "删除成功",
@@ -216,7 +250,7 @@ export default {
       addListApi(postData).then(response => {
         obj[this.idKey] = response.data
         console.log(obj);  //异步完成后 接口返回来当前新增的这条数据的id    //id根据当前模块需要的id进行修改
-        if (response.status === 0) {
+        if (response.statusCode === 200) {
           this.$message({
             type: "success",
             message: "新增成功",
@@ -239,7 +273,7 @@ export default {
     updateData () {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       updateListApi(postData).then(response => {
-        if (response.status === 0) {
+        if (response.statusCode === 200) {
           this.$message({
             type: "success",
             message: "修改成功",
@@ -281,25 +315,7 @@ export default {
         return false;
       }
     },
-    findAllRoleList () {
-      findAllList().then(response => {
-        if (response.status === 0) {
-          let arr = response.data.map(item => {
-            return { label: item.roleNickname, value: item.roleName }
-          })
-          for (let item of this.addDialogFormElement) {
-            if (item.label === '角色') {
-              item.typeselects = arr
-            }
-          }
-          for (let item of this.editDialogFormElement) {
-            if (item.label === '角色') {
-              item.typeselects = arr
-            }
-          }
-        }
-      })
-    }
+
   }
 }
 

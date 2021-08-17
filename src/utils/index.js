@@ -109,14 +109,14 @@ export function param2Obj(url) {
     )
 }
 export function formatTree(data, pid, id) {
-    let parents = data.filter(p => p[pid] === 0),
-        children = data.filter(c => c[pid] !== 0);
+    let parents = data.filter(p => p[pid] == 0),
+        children = data.filter(c => c[pid] != 0);
     dataToTree(parents, children);
 
     function dataToTree(parents, children) {
         parents.map((p) => {
             children.map((c, i) => {
-                if (c[pid] === p[id]) {
+                if (c[pid] == p[id]) {
                     let _c = JSON.parse(JSON.stringify(children));
                     _c.splice(i, 1);
                     dataToTree([c], _c);

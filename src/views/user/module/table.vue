@@ -91,11 +91,10 @@ export default {
   },
   methods: {
     /**获取数据列表 */
-    findPageList (data) {
-      let getData = JSON.stringify(data);
-      findPageListApi({ params: getData }).then(response => {
-        if (response.status === 0) {
-          this.tableData = response.data
+    findPageList (params) {
+      findPageListApi(params).then(response => {
+        if (response.statusCode === 200) {
+          this.tableData = response.dataList
           this.$emit('tableDataList', response)
         }
       })

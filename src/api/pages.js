@@ -4,7 +4,7 @@ import { baseURL } from '@/config'
 export function findAllListApi(params) {
     return request({
         baseURL,
-        url: '/pages/findAllList',
+        url: '/view/findAll',
         method: 'get',
         params
     })
@@ -13,7 +13,7 @@ export function findAllListApi(params) {
 export function addListApi(data) {
     return request({
         baseURL,
-        url: '/pages/add',
+        url: '/view/add',
         method: 'post',
         data
     })
@@ -22,7 +22,7 @@ export function addListApi(data) {
 export function deleteListApi(data) {
     return request({
         baseURL,
-        url: '/pages/delete',
+        url: '/view/delete',
         method: 'post',
         data
     })
@@ -31,7 +31,7 @@ export function deleteListApi(data) {
 export function updateListApi(data) {
     return request({
         baseURL,
-        url: '/pages/update',
+        url: '/view/update',
         method: 'post',
         data
     })

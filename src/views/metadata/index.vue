@@ -222,7 +222,7 @@ export default {
     /**查询元数据所有类别 */
     findAllMetadataTypeList () {
       findAllMetadataTypeList().then(response => {
-        if (response.status === 0) {
+        if (response.statusCode === 200) {
           this.metadataTypeList = response.data
           this.menuDataList = response.data.map(item => {
             return { typeName: item.typeName, typeField: item.typeField }
@@ -251,7 +251,7 @@ export default {
             postData['idMetadataType'] = row['idMetadataType']
           }
           deleteListApi(postData, this.url).then((response) => {
-            if (response.status === 0) {
+            if (response.statusCode === 200) {
               this.$message({
                 type: "success",
                 message: "删除成功",
@@ -287,7 +287,7 @@ export default {
         this.dialogFormModel.typeField = this.activeLink
       }
       addListApi(this.dialogFormModel, this.url).then(response => {
-        if (response.status === 0) {
+        if (response.statusCode === 200) {
           this.$message({
             type: "success",
             message: "新增",

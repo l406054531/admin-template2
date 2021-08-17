@@ -1,5 +1,6 @@
 import axios from 'axios'
 // import { Message, MessageBox } from 'element-ui'
+import { getToken } from '@/utils/cache';
 
 const service = axios.create({
     baseURL: "",
@@ -8,7 +9,10 @@ const service = axios.create({
 })
 
 service.interceptors.request.use(
+
     (config) => {
+        let token = getToken()
+        config.headers['authorization'] = 'Bearer ' + token
         return config
     },
     (error) => {

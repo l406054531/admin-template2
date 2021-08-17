@@ -28,7 +28,7 @@ service.interceptors.request.use(
 // 登录响应拦截
 service.interceptors.response.use(
     response => {
-        if (response.status === 200) {
+        if (response.statusCode === 200) {
             // 如果没有接收到token，则报错并停止登录
             if (!response.headers['authorization']) {
                 Message({
@@ -42,15 +42,15 @@ service.interceptors.response.use(
             return response
         } else {
             Message({
-                message: response.status + ' ' + response.statusText,
+                message: response.statusCode + ' ' + response.statusText,
                 type: 'error',
                 duration: 2 * 1000
             })
-            return Promise.reject(new Error(response.status + ' ' + response.statusText))
+            return Promise.reject(new Error(response.statusCode + ' ' + response.statusText))
         }
     }, error => {
         if (error && error.response) {
-            switch (error.response.status) {
+            switch (error.response.statusCode) {
                 case 400:
                     error.message = '错误请求'
                     break
@@ -88,7 +88,7 @@ service.interceptors.response.use(
                     error.message = 'http版本不支持该请求'
                     break
                 default:
-                    error.message = `连接错误${error.response.status}`
+                    error.message = `连接错误${error.response.statusCode}`
             }
         } else {
             error.message = "连接到服务器失败"

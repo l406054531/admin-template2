@@ -88,7 +88,7 @@ export default {
         data: allData
       }
       addMandateListApi(postData).then(response => {
-        if (response.status === 0) {
+        if (response.statusCode === 200) {
           this.$message({
             type: "success",
             message: "更新成功",

@@ -29,15 +29,16 @@ const actions = {
     login({ commit }, usetInfo) {
         return new Promise((resolve, reject) => {
             login(usetInfo).then(response => {
-                let { token, menu, data } = response
+                let { access_token, menus, data } = response
                 commit("SET_NAME", data.nickname)
-                menu = JSON.stringify(formatTree(menu, "idParent", "idPage"));
+                menus = JSON.stringify(formatTree(menus, "idParent", "idView"));
                 data = JSON.stringify(data);
-                commit("SET_TOKEN", token)
+                commit("SET_TOKEN", access_token)
                 commit("USER_INFO", data)
-                setToken(token)
+                setToken(access_token)
+                console.log(getToken());
                 setUserInfo(data)
-                setMenu(menu)
+                setMenu(menus)
                 resolve()
             }).catch(error => {
                 reject(error)

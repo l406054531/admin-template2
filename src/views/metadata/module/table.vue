@@ -105,7 +105,7 @@ export default {
     findPageList (data) {
       let getData = JSON.stringify(data);
       findAllMetadataElementList({ params: getData }).then(response => {
-        if (response.status === 0) {
+        if (response.statusCode === 200) {
           this.tableData = response.data
           console.log(this.tableData);
           this.$emit('emitTableData', response)
@@ -115,7 +115,7 @@ export default {
     findAllList (data, url) {
       let getData = JSON.stringify(data);
       findAllList({ params: getData }, url).then(response => {
-        if (response.status === 0) {
+        if (response.statusCode === 200) {
           this.tableData = response.data
           this.$emit('emitTableData', response)
         }

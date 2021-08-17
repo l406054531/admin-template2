@@ -39,6 +39,7 @@
     "nprogress": "^0.2.0",
     "qs": "^6.9.6",
     "sass-loader": "^8.0.2",
+    "sass-resources-loader": "^2.2.3",
     "style-resources-loader": "^1.4.1",
     "svg-sprite-loader": "^6.0.2",
     "vue-cli-plugin-style-resources-loader": "^0.1.4",

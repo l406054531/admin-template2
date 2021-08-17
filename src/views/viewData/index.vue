@@ -158,7 +158,7 @@ export default {
           let postData = {}
           postData[this.idKey] = data[this.idKey]
           deleteListApi(postData).then((response) => {
-            if (response.status === 0) {
+            if (response.statusCode === 200) {
               this.$message({
                 type: "success",
                 message: "删除成功",
@@ -186,8 +186,8 @@ export default {
     /**获取所有的页面--异步请求 */
     findAllList () {
       findAllListApi().then(response => {
-        this.allPageList = response.data
-        this.treeData = formatTree(response.data, "idParent", "idPage")
+        this.allPageList = response.dataList
+        this.treeData = formatTree(response.dataList, "idParent", "idView")
         this.treeKey = new Date() + Math.random() * 1000
       })
     },
@@ -196,7 +196,7 @@ export default {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       postData.idParent = this.idParent
       addListApi(postData).then(response => {
-        if (response.status === 0) {
+        if (response.statusCode === 200) {
           this.findAllList()
           this.$message({
             type: "success",
@@ -211,7 +211,7 @@ export default {
     updateData () {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       updateListApi(postData).then(response => {
-        if (response.status === 0) {
+        if (response.statusCode === 200) {
           this.findAllList()
           this.$message({
             type: "success",

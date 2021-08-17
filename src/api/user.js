@@ -4,7 +4,7 @@ import { loginURL, baseURL } from '@/config'
 export function login(data) {
     return request({
         baseURL: loginURL,
-        url: '/user/login',
+        url: '/login',
         method: 'post',
         data
     })
@@ -18,12 +18,12 @@ export function findPageListApi(params) {
         params
     })
 }
-export function deleteListApi(data) {
+export function deleteListApi(params) {
     return request({
         baseURL,
         url: '/user/delete',
-        method: 'post',
-        data
+        method: 'delete',
+        params
     })
 }
 
