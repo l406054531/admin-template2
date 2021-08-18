@@ -88,6 +88,7 @@
                  :visible.sync="drawer"
                  :direction="direction">
         <tree :currentRoleInfo="currentRoleInfo"
+              @closeDrawer="closeDrawer"
               v-if="drawer" />
       </el-drawer>
 
@@ -100,12 +101,12 @@
 
 import myTable from './module/table';  //表格
 import tree from './module/tree.vue';  //表格
-import { addListApi, deleteListApi, updateListApi } from '@/api/roles.js'; //异步方法
+import { addListApi, deleteListApi, updateListApi } from '@/api/role.js'; //异步方法
 
 export default {
   components: { myTable, tree },
   //   name:"角色管理",
-  data () {
+  data() {
     return {
       tableHeader: [ //表格头部
         // { label: '', prop: '', type: 'selection' },
@@ -114,7 +115,7 @@ export default {
         { label: '角色名称', prop: 'roleName' },
         { label: '操作', prop: 'operation', width: "80" },
       ],
-      tableParams: { pageNum: 1, pageSize: 20},  //表格请求参数
+      tableParams: { pageNum: 1, pageSize: 20 },  //表格请求参数
       tableKey: null,  //表格Key
       total: 0,   //数据总条数
       tableData: [],//表格数据
@@ -149,17 +150,17 @@ export default {
 
     };
   },
-  mounted () {
+  mounted() {
 
   },
   methods: {
     /**点击新增 */
-    handleAdd () {
+    handleAdd() {
       this.dialogTitle = '新增';
       this.dialogFormVisible = true;
     },
     /**点击刷新 */
-    handleRefresh () {
+    handleRefresh() {
       this.tableParams.pageNum = 1;
       this.tableParams.pageSize = 20;
       this.paginationInfo.currentPage = 1;
@@ -167,7 +168,7 @@ export default {
       this.tableKey = Math.random() * 100 + new Date();
     },
     /**点击表格修改 */
-    handleUpdate (data) {
+    handleUpdate(data) {
       this.dialogTitle = '编辑';
       this.register(false)
       //赋值
@@ -177,17 +178,17 @@ export default {
       this.dialogFormVisible = true;
     },
     /**已勾选的数据 */
-    handleSelectionChange (val) {
+    handleSelectionChange(val) {
       this.multipleSelection = val
     },
-    /**表格数据总条数 */
-    tableDataList (data) {
+    /**表格数据 */
+    tableDataList(data) {
       this.total = data.total
       this.size = data.size
-      this.tableData = data.data
+      this.tableData = data.dataList
     },
     /**分页变动时 */
-    handleSizeChange (paginationInfo) {
+    handleSizeChange(paginationInfo) {
       this.tableParams.pageNum = paginationInfo.currentPage;
       this.tableParams.pageSize = paginationInfo.pagesize;
       this.paginationInfo.currentPage = paginationInfo.currentPage;
@@ -195,12 +196,12 @@ export default {
       this.tableKey = Math.random() * 100 + new Date();
     },
     /**弹出框取消按钮*/
-    handleCloseDialog () {
+    handleCloseDialog() {
       this.dialogFormVisible = false;
       this.register()
     },
     /**重置表单 */
-    register (flag = true) {
+    register(flag = true) {
       this.dialogFormModel = {}
       this.dialogFormElement.forEach((item) => {
         this.$set(this.dialogFormModel, item.prop, "");
@@ -210,12 +211,12 @@ export default {
       }
     },
     /** 点击权限分配 */
-    handlePermissionAssignmen (data) {
+    handlePermissionAssignmen(data) {
       this.currentRoleInfo = data
       this.drawer = true
     },
     /**点击表格删除--异步请求 */
-    handleDelete (data) {
+    handleDelete(data) {
       this.$confirm("此操作将把这条数据删除, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -223,7 +224,6 @@ export default {
       })
         .then(() => {
           //id根据当前模块需要的id进行修改
-          //   let id = data.id
           let postData = {}
           postData[this.idKey] = data[this.idKey]
           deleteListApi(postData).then((response) => {
@@ -244,12 +244,11 @@ export default {
         .catch();
     },
     /**新增数据-异步请求 */
-    saveData () {
+    saveData() {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       let obj = JSON.parse(JSON.stringify(postData))  //因为postData可能还会进行别的操作   所以重新定义一个obj
       addListApi(postData).then(response => {
         obj[this.idKey] = response.data
-        console.log(obj);  //异步完成后 接口返回来当前新增的这条数据的id    //id根据当前模块需要的id进行修改
         if (response.statusCode === 200) {
           this.$message({
             type: "success",
@@ -270,7 +269,7 @@ export default {
       })
     },
     /**修改数据-异步请求 */
-    updateData () {
+    updateData() {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       updateListApi(postData).then(response => {
         if (response.statusCode === 200) {
@@ -289,7 +288,7 @@ export default {
       })
     },
     /**搜索--异步请求 */
-    handleSearch () {
+    handleSearch() {
       let params = {}
       params.pageNum = 1
       params.pageSize = this.paginationInfo.pagesize
@@ -300,7 +299,7 @@ export default {
     },
 
     /**弹出框确定按钮*/
-    handleDialogSubmit () {
+    handleDialogSubmit() {
       let flag = this.$refs["myform"].validateForm();
       if (flag) {
         switch (this.dialogTitle) {
@@ -315,7 +314,9 @@ export default {
         return false;
       }
     },
-
+    closeDrawer() {
+      this.drawer = false
+    }
   }
 }
 

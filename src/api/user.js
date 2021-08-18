@@ -31,7 +31,7 @@ export function updateListApi(data) {
     return request({
         baseURL,
         url: '/user/update',
-        method: 'post',
+        method: 'put',
         data
     })
 }
@@ -39,7 +39,7 @@ export function updateListApi(data) {
 export function addListApi(data) {
     return request({
         baseURL,
-        url: '/user/register',
+        url: '/user/add',
         method: 'post',
         data
     })

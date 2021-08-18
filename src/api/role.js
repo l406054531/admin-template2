@@ -17,14 +17,6 @@ export function findAllList(params) {
         params
     })
 }
-export function findPermissionApi(params) {
-    return request({
-        baseURL,
-        url: '/role/findPermission',
-        method: 'get',
-        params
-    })
-}
 
 export function addListApi(data) {
     return request({
@@ -35,12 +27,12 @@ export function addListApi(data) {
     })
 }
 
-export function deleteListApi(data) {
+export function deleteListApi(params) {
     return request({
         baseURL,
         url: '/role/delete',
-        method: 'post',
-        data
+        method: 'delete',
+        params
     })
 }
 
@@ -48,7 +40,7 @@ export function updateListApi(data) {
     return request({
         baseURL,
         url: '/role/update',
-        method: 'post',
+        method: 'put',
         data
     })
 }

@@ -18,3 +18,12 @@ export function deleteMandateListApi(data) {
         data
     })
 }
+
+export function findAllManDate(params) {
+    return request({
+        baseURL,
+        url: '/mandate/findAll',
+        method: 'get',
+        params
+    })
+}

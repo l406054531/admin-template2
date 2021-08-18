@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { findPageListApi } from '@/api/roles.js';
+import { findPageListApi } from '@/api/role.js';
 export default {
   name: 'Mytable',
   props: {

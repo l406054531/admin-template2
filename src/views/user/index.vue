@@ -64,7 +64,7 @@
 
 import myTable from './module/table';  //表格
 import { addListApi, deleteListApi, updateListApi } from '@/api/user.js'; //异步方法
-import { findAllList } from '@/api/roles.js'; //异步方法
+import { findAllList } from '@/api/role.js'; //异步方法
 
 export default {
   components: { myTable },
@@ -79,15 +79,15 @@ export default {
         { label: '角色', prop: 'userRole' },
         { label: '操作', prop: 'operation', width: "80" },
       ],
-      tableParams: { pageNum: 1, pageSize: 2 },  //表格请求参数
+      tableParams: { pageNum: 1, pageSize: 20 },  //表格请求参数
       tableKey: null,  //表格Key
       total: 0,   //数据总条数
       tableData: [],//表格数据
       size: 0,//当前页数据的大小
       paginationInfo: {   // 分页的信息
         currentPage: 1,
-        pagesizes: [2, 50, 100, 200, 300],
-        pagesize: 2  //默认每页固定条数
+        pagesizes: [20, 50, 100, 200, 300],
+        pagesize: 20  //默认每页固定条数
       },
       dialogTitle: '新增',  //弹出框头部标题
       dialogFormVisible: false,  //弹出框状态
@@ -151,12 +151,11 @@ export default {
       this.dialogFormVisible = true;
     },
 
-    /**表格数据总条数 */
+    /**表格数据 */
     tableDataList(data) {
-      console.log(data);
       this.total = data.total
       this.size = data.size
-      this.tableData = data.data
+      this.tableData = data.dataList
     },
     /**分页变动时 */
     handleSizeChange(paginationInfo) {
@@ -216,7 +215,6 @@ export default {
       let obj = JSON.parse(JSON.stringify(postData))  //因为postData可能还会进行别的操作   所以重新定义一个obj
       addListApi(postData).then(response => {
         obj[this.idKey] = response.data
-        console.log(obj);  //异步完成后 接口返回来当前新增的这条数据的id    //id根据当前模块需要的id进行修改
         if (response.statusCode === 200) {
           this.$message({
             type: "success",

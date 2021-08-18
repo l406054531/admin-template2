@@ -33,15 +33,15 @@ module.exports = {
      * */
     productionSourceMap: false,
 
-    // pwa: {
-    //     iconPaths: {
-    //         favicon32: './logo.png',
-    //         favicon16: './logo.png',
-    //         appleTouchIcon: './logo.png',
-    //         maskIcon: './logo.png',
-    //         msTileImage: './logo.png'
-    //     }
-    // },
+    pwa: {
+        iconPaths: {
+            favicon32: './logo.png',
+            favicon16: './logo.png',
+            appleTouchIcon: './logo.png',
+            maskIcon: './logo.png',
+            msTileImage: './logo.png'
+        }
+    },
 
     // 开发服务配置
     // devServer: {

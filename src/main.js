@@ -19,6 +19,10 @@ import './ui/globalControl' //全局控件
 
 import "./icons/iconfont/iconfont.css"
 
+import BaiduMap from 'vue-baidu-map'
+Vue.use(BaiduMap, { ak: 'XUj5fj5ZSP9YWP3Ap5QhjVXgeWfzeUuv' })
+
+
 Vue.config.productionTip = false
 
 new Vue({

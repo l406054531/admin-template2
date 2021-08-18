@@ -106,7 +106,7 @@ export default {
       let getData = JSON.stringify(data);
       findAllMetadataElementList({ params: getData }).then(response => {
         if (response.statusCode === 200) {
-          this.tableData = response.data
+          this.tableData = response.dataList
           console.log(this.tableData);
           this.$emit('emitTableData', response)
         }
@@ -116,7 +116,7 @@ export default {
       let getData = JSON.stringify(data);
       findAllList({ params: getData }, url).then(response => {
         if (response.statusCode === 200) {
-          this.tableData = response.data
+          this.tableData = response.dataList
           this.$emit('emitTableData', response)
         }
       })

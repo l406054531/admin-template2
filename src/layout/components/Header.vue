@@ -1,8 +1,11 @@
 <template>
   <div class="header">
     <div class="left-title">
-      <i class="el-icon-eleme"></i>
-      {{title}}
+      <!-- <i class="el-icon-eleme"></i> -->
+      <img src="../../assets/logo.png"
+           alt=""
+           class="logo">
+      <h4> {{title}}</h4>
     </div>
     <div class="right-menu">
       <el-dropdown class="avatar-container"
@@ -46,8 +49,8 @@ export default {
     // ...mapGetters([
     //   'name'
     // ])
-    name(){
-        return JSON.parse(getUserInfo()).nickname
+    name() {
+      return JSON.parse(getUserInfo()).nickname
     }
   },
   methods: {
@@ -61,8 +64,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$color: rgb(115, 118, 225);
 .header {
-  background-color: #242f42;
+  //   background-color: #242f42;
+  background: url("../../assets/img/header.jpg");
   color: #fff;
   font-size: 22px;
   height: 60px;
@@ -70,8 +75,16 @@ export default {
   align-items: center;
   justify-content: space-between;
   .left-title {
-    float: left;
-    margin-left: 20px;
+    color: $color;
+    margin-left: 50px;
+    .logo {
+      width: 30px;
+      float: left;
+    }
+    h4 {
+      float: left;
+      padding: 5px 0 0 10px;
+    }
   }
   .right-menu {
     float: right;
@@ -126,8 +139,11 @@ export default {
 
         .user-name {
           margin: 0 5px 0 8px;
+          color: $color;
         }
-
+        .el-icon-caret-bottom {
+          color: $color;
+        }
         .el-icon-caret-bottom {
           cursor: pointer;
         }

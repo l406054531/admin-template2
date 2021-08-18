@@ -9,7 +9,7 @@
                :key="treeKey"
                show-checkbox
                default-expand-all
-               node-key="idPage"
+               node-key="idView"
                :default-checked-keys="defaultChecked"
                :expand-on-click-node="false"
                :props="defaultProps">
@@ -21,9 +21,8 @@
 
 <script>
 
-import { findAllListApi } from "@/api/pages"
-import { findPermissionApi } from "@/api/roles"
-import { addMandateListApi } from "@/api/mandate"
+import { findAllListApi } from '@/api/viewManage'
+import { addMandateListApi,findAllManDate } from "@/api/mandate"
 import { formatTree } from "@/utils"
 export default {
   props: {
@@ -50,28 +49,28 @@ export default {
   methods: {
     init() {
       this.findAllList()
-      this.findPermission({ roleName: this.currentRoleInfo.roleName })
+      this.findPermission({ role: this.currentRoleInfo.roleField })
     },
     //获取所有的页面
     findAllList() {
       findAllListApi().then(response => {
-        this.allPageList = response.data
-        this.treeData = formatTree(response.data, "idParent", "idPage")
+        this.allPageList = response.dataList
+        this.treeData = formatTree(response.dataList, "idParent", "idView")
       })
     },
     //获取角色授权的页面
     findPermission(params) {
-      findPermissionApi(params).then(response => {
-        this.rolePageList = response.data
-        let data = formatTree(response.data, "idParent", "idPage")
+      findAllManDate(params).then(response => {
+        this.rolePageList = response.dataList
+        let data = formatTree(response.dataList, "idParent", "idView")
         for (let item of data) {
           if (item.children) {
-            this.defaultExpanded.push(item.idPage)
+            this.defaultExpanded.push(item.idView)
             for (let cItem of item.children) {
-              this.defaultChecked.push(cItem.idPage)
+              this.defaultChecked.push(cItem.idView)
             }
           } else {
-            this.defaultChecked.push(item.idPage)
+            this.defaultChecked.push(item.idView)
           }
         }
         this.treeKey = new Date() + Math.random() * 100
@@ -84,7 +83,7 @@ export default {
       })
       // 参数
       let postData = {
-        role: this.currentRoleInfo.roleName,
+        role: this.currentRoleInfo.roleField,
         data: allData
       }
       addMandateListApi(postData).then(response => {
@@ -93,6 +92,7 @@ export default {
             type: "success",
             message: "更新成功",
           });
+          this.$emit("closeDrawer")
         }
       })
     }

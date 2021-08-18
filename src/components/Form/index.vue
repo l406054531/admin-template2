@@ -5,7 +5,8 @@
  -->
   <el-form ref="myform"
            :rules="rules"
-           :model="formModel">
+           :model="formModel"
+           :size="formSize">
     <template v-for="(item,index) in dialogFormElement">
       <div :key="index">
         <el-col :span="item.colSpan">
@@ -124,6 +125,10 @@ export default {
     labelWidth: {
       type: String,
       default: "120px"
+    },
+    formSize: {
+      type: String,
+      default: "small"
     },
     colSpan: {
       type: Number,

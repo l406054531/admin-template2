@@ -15,12 +15,9 @@ router.beforeEach(async(to, from, next) => {
     let token = getToken()
     let menu = getMenu()
     let isLogin = store.getters.isLogin
-
     if (token && menu) {
-
         if (!isLogin) {
             let hasMenus = homeRoutes.concat(generateRouter(JSON.parse(menu)))
-            console.log(hasMenus);
             await store.dispatch("user/findIsLogin", hasMenus)
             router.addRoutes(hasMenus);
             if (to.path == "/") {

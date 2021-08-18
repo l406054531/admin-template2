@@ -223,13 +223,13 @@ export default {
     findAllMetadataTypeList () {
       findAllMetadataTypeList().then(response => {
         if (response.statusCode === 200) {
-          this.metadataTypeList = response.data
-          this.menuDataList = response.data.map(item => {
+          this.metadataTypeList = response.dataList
+          this.menuDataList = response.dataList.map(item => {
             return { typeName: item.typeName, typeField: item.typeField }
           })
-          if (response.data.length > 0) {
-            this.activeLink = response.data[0].typeField
-            this.params.typeField = response.data[0].typeField
+          if (response.dataList.length > 0) {
+            this.activeLink = response.dataList[0].typeField
+            this.params.typeField = response.dataList[0].typeField
           }
           this.menuKey = Math.random() * 100 + new Date()
         }

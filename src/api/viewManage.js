@@ -19,12 +19,12 @@ export function addListApi(data) {
     })
 }
 
-export function deleteListApi(data) {
+export function deleteListApi(params) {
     return request({
         baseURL,
         url: '/view/delete',
-        method: 'post',
-        data
+        method: 'delete',
+        params
     })
 }
 
@@ -32,7 +32,7 @@ export function updateListApi(data) {
     return request({
         baseURL,
         url: '/view/update',
-        method: 'post',
+        method: 'put',
         data
     })
 }

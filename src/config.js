@@ -9,7 +9,7 @@
 const isDev = process.env.NODE_ENV === 'development'
 module.exports = {
     // 网站标题
-    title: 'admin-template',
+    title: '管理端',
     // 接口地址
     // baseURL: 'http://42.194.202.86:3004',
     baseURL: isDev ? 'http://127.0.0.1:3000' : 'http://42.194.202.86:3004',

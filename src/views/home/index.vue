@@ -1,10 +1,13 @@
 <template>
-  <div>首页</div>
+  <div class="main">
+    <baiduMpa />
+  </div>
 </template>
-
 <script>
+import baiduMpa from "../../components/baiduMap"
 export default {
-  data () {
+  components: { baiduMpa },
+  data() {
     return {
     };
   },
@@ -12,4 +15,7 @@ export default {
 
 </script>
 <style lang='scss' scoped>
+.main{
+    height: 100%;
+}
 </style>
