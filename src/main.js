@@ -1,11 +1,3 @@
-/*
- * @Author: lct
- * @Date: 2021-02-01 19:01:32
- * @LastEditTime: 2021-04-07 13:11:54
- * @LastEditors: Please set LastEditors
- * @Description: 项目主入口文件
- * @FilePath: \vue-cli4.x-project-template\src\main.js
- */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -19,8 +11,13 @@ import './ui/globalControl' //全局控件
 
 import "./icons/iconfont/iconfont.css"
 
-import BaiduMap from 'vue-baidu-map'
-Vue.use(BaiduMap, { ak: 'XUj5fj5ZSP9YWP3Ap5QhjVXgeWfzeUuv' })
+import * as echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+import ECharts from 'vue-echarts'
+Vue.component('v-chart', ECharts)
+
+import countTo from 'vue-count-to';
+Vue.component('count-to', countTo)
 
 
 Vue.config.productionTip = false

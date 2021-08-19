@@ -14,21 +14,21 @@ let Base64 = require('js-base64').Base64
  * @param token
  */
 export function decodeToken(token) {
-  if (!token) {
-    console.log(new Error('token is undefined!'))
-    return
-  }
-  let arr = token.split('.')
-  // let res = JSON.parse(Base64.decode(arr[1]))
-  // console.log(Date.parse(new Date()))
-  // console.log(new Date().getTime())
-  // console.log(Math.round(new Date() / 1000))
-  //
-  // console.log(res.exp)
-  // console.log(moment(parseInt(res.exp)).format('YYYY-MM-DD HH:mm:ss'))
-  // console.log(moment.unix(1588223304).format('YYYY-MM-DD HH:mm:ss'))
-  // return
-  return JSON.parse(Base64.decode(arr[1]))
+    if (!token) {
+        console.log(new Error('token is undefined!'))
+        return
+    }
+    let arr = token.split('.')
+        // let res = JSON.parse(Base64.decode(arr[1]))
+        // console.log(Date.parse(new Date()))
+        // console.log(new Date().getTime())
+        // console.log(Math.round(new Date() / 1000))
+        //
+        // console.log(res.exp)
+        // console.log(moment(parseInt(res.exp)).format('YYYY-MM-DD HH:mm:ss'))
+        // console.log(moment.unix(1588223304).format('YYYY-MM-DD HH:mm:ss'))
+        // return
+    return JSON.parse(Base64.decode(arr[1]))
 }
 
 /**
@@ -38,6 +38,6 @@ export function decodeToken(token) {
  * @returns {*}
  */
 export function decodeTokenByKey(token, key) {
-  let res = decodeToken(token)
-  return res[key]
+    let res = decodeToken(token)
+    return res[key]
 }

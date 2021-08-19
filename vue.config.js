@@ -121,5 +121,9 @@ module.exports = {
                 path.resolve(__dirname, './src/styles/mixins.scss')
             ]
         }
-    }
+    },
+    transpileDependencies: [
+        'vue-echarts',
+        'resize-detector'
+    ]
 }

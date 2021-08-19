@@ -1,23 +1,21 @@
 <template>
   <div class="main">
-    <top-block></top-block>
+    <baiduMpa />
   </div>
 </template>
 <script>
-import topBlock from "./topBlock/index"
-
+import baiduMpa from "../../components/baiduMap"
 export default {
-  components: { topBlock },
+  components: { baiduMpa },
   data() {
     return {
-
     };
   },
 }
 
 </script>
 <style lang='scss' scoped>
-.main {
-  height: 100%;
+.main{
+    height: 100%;
 }
 </style>

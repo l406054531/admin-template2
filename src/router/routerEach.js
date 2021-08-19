@@ -54,7 +54,6 @@ function generateRouter(userRouters) {
             routes.path = r.path
         } else {
             routes.component = () =>
-                // import (`@/views${r.path}/index.vue`)
                 Promise.resolve(require(`@/views${r.path}/index.vue`).default)
             routes.path = r.name
         }

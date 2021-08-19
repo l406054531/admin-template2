@@ -15,60 +15,39 @@ export default {
   data() {
     return {
       mapExamples: {//地图实例配置
-        zoomLevel: 12,//缩放等级
-        zoomisOpen: true,// 是否开启缩放
+        zoomLevel: 8,//缩放等级
         longitude: 108.327649,// 中心点经度
         latitude: 22.824988, // 中心点纬度
-        openPositioning: true,//是否开启定位
+        openPositioning: false,//是否开启定位
       },
 
     };
   },
   mounted() {
-    //   console.log(Map);
-    loadBaiduMapScript().then(BMapGL => {
-      // console.log(BMapGL);
-      //   console.log(BMap);
-      this.initMap(BMapGL)
-    })
-    this.$nextTick(() => {
-
-    })
-    //   var map = new BMapGL.Map("container");
-    //   var point = new BMapGL.Point(116.404, 39.915);
-    //   map.centerAndZoom(point, 15); 
+    this.initMap()
   },
   methods: {
-    initMap(BMapGL) {
-      console.log(BMapGL);
-      var map = new BMapGL.Map("allmap");
-      var point = new BMapGL.Point(116.404, 39.915);
-    //   map.setHeading(64.5);
-    //   map.setTilt(73);
-      map.centerAndZoom(point, 15);
-    },
-    /**
-     * @author lx
-     * @dateTime 2021-7-29
-     * @remark 初始化地图
-     */
-    mapReady({ BMap, map }) {
+    async initMap() {
       let { longitude, latitude, zoomLevel, openPositioning } = this.mapExamples
-      let point = new BMap.Point(longitude, latitude);
-      map.centerAndZoom(point, zoomLevel);// 地图初始化，同时设置地图展示级别
+      const BMapGL = await loadBaiduMapScript('BMapGL')
+      var map = new BMapGL.Map("allmap", {
+        restrictCenter: false
+      });
+      var point = new BMapGL.Point(longitude, latitude);
+      map.centerAndZoom(point, zoomLevel);
       map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-      //   map.setHeading(64.5);
-      //   map.setTilt(73);
-      map.addControl(new BMap.NavigationControl()); //平移缩放控件
+      map.addControl(new BMapGL.ScaleControl()); // 添加比例尺控件
+      map.addControl(new BMapGL.ZoomControl()); // 添加缩放控件
+    //   map.addControl(new BMapGL.NavigationControl3D()); // 添加3D控件
+      map.setHeading(0);
+      map.setTilt(50);
       map.setMapStyleV2({
         styleId: '87329fbddf446fb069a56d009f579151'
       });
-      //   map.addControl(new BMap.ScaleControl());//比例尺
 
       if (openPositioning) {
-        this.getGeolocation(BMap, map)
+        this.getGeolocation()
       }
-
     },
     /**
      * @author lx
@@ -98,9 +77,8 @@ export default {
   height: 100%;
   #allmap {
     width: 100%;
-    // height: 100vh;
     height: 100%;
-    margin: 0 auto;
+    background-color: #091220;
   }
 }
 </style>

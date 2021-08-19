@@ -30,6 +30,8 @@ export default {
   flex: 1;
   overflow-x: hidden;
   overflow-y: auto;
+  padding: 10px;
+  /* background: rgb(245,247,249); */
   /*position: absolute;*/
   /*top: 84px;*/
   /*bottom: 0;*/
