@@ -6,6 +6,13 @@
   "description": "",
   "glyphs": [
     {
+      "icon_id": "23453983",
+      "name": "绿茶",
+      "font_class": "lvcha",
+      "unicode": "e60b",
+      "unicode_decimal": 58891
+    },
+    {
       "icon_id": "21671292",
       "name": "地图",
       "font_class": "tubiaozhizuomoban",
