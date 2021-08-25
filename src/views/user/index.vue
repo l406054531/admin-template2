@@ -69,7 +69,7 @@ import { findAllList } from '@/api/role.js'; //异步方法
 export default {
   components: { myTable },
   //   name:"角色管理",
-  data() {
+  data () {
     return {
       tableHeader: [ //表格头部
         // { label: '', prop: '', type: 'selection' },
@@ -121,18 +121,18 @@ export default {
       idKey: 'idUser',
     };
   },
-  mounted() {
+  mounted () {
     this.findAllRoleList()
   },
   methods: {
     /**点击新增 */
-    handleAdd() {
+    handleAdd () {
       this.dialogTitle = '新增';
       this.dialogFormElement = this.addDialogFormElement
       this.dialogFormVisible = true;
     },
     /**点击刷新 */
-    handleRefresh() {
+    handleRefresh () {
       this.tableParams.pageNum = 1;
       this.tableParams.pageSize = 20;
       this.paginationInfo.currentPage = 1;
@@ -140,7 +140,7 @@ export default {
       this.tableKey = Math.random() * 100 + new Date();
     },
     /**点击表格修改 */
-    handleUpdate(data) {
+    handleUpdate (data) {
       this.dialogTitle = '编辑';
       this.dialogFormElement = this.editDialogFormElement
       this.register(false)
@@ -152,13 +152,13 @@ export default {
     },
 
     /**表格数据 */
-    tableDataList(data) {
+    tableDataList (data) {
       this.total = data.total
       this.size = data.size
       this.tableData = data.dataList
     },
     /**分页变动时 */
-    handleSizeChange(paginationInfo) {
+    handleSizeChange (paginationInfo) {
       this.tableParams.pageNum = paginationInfo.currentPage;
       this.tableParams.pageSize = paginationInfo.pagesize;
       this.paginationInfo.currentPage = paginationInfo.currentPage;
@@ -166,12 +166,12 @@ export default {
       this.tableKey = Math.random() * 100 + new Date();
     },
     /**弹出框取消按钮*/
-    handleCloseDialog() {
+    handleCloseDialog () {
       this.dialogFormVisible = false;
       this.register()
     },
     /**重置表单 */
-    register(flag = true) {
+    register (flag = true) {
       this.dialogFormModel = {}
       this.dialogFormElement.forEach((item) => {
         this.$set(this.dialogFormModel, item.prop, "");
@@ -181,7 +181,7 @@ export default {
       }
     },
     /**点击表格删除--异步请求 */
-    handleDelete(data) {
+    handleDelete (data) {
       this.$confirm("此操作将把这条数据放进回收站, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -210,7 +210,7 @@ export default {
         .catch();
     },
     /**新增数据-异步请求 */
-    saveData() {
+    saveData () {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       let obj = JSON.parse(JSON.stringify(postData))  //因为postData可能还会进行别的操作   所以重新定义一个obj
       addListApi(postData).then(response => {
@@ -235,7 +235,7 @@ export default {
       })
     },
     /**修改数据-异步请求 */
-    updateData() {
+    updateData () {
       let postData = JSON.parse(JSON.stringify(this.dialogFormModel));
       updateListApi(postData).then(response => {
         if (response.statusCode === 200) {
@@ -254,7 +254,7 @@ export default {
       })
     },
     /**搜索--异步请求 */
-    handleSearch() {
+    handleSearch () {
       let params = {}
       params.pageNum = 1
       params.pageSize = this.paginationInfo.pagesize
@@ -265,7 +265,7 @@ export default {
     },
 
     /**弹出框确定按钮*/
-    handleDialogSubmit() {
+    handleDialogSubmit () {
       let flag = this.$refs["myform"].validateForm();
       if (flag) {
         switch (this.dialogTitle) {
@@ -280,7 +280,7 @@ export default {
         return false;
       }
     },
-    findAllRoleList() {
+    findAllRoleList () {
       findAllList().then(response => {
         if (response.statusCode === 200) {
           let arr = response.dataList.map(item => {
@@ -306,13 +306,13 @@ export default {
 <style lang='scss' scoped>
 .content {
   height: 100%;
-  min-width: 1360px;
+
   width: 100%;
   .wrapper {
     height: 100%;
     display: flex;
     flex-direction: column;
-    min-height: 820px;
+
     padding: 10px;
     .search-block {
       float: right;
@@ -330,7 +330,7 @@ export default {
     .main {
       width: 100%;
       height: 100%;
-      min-width: 1648px;
+
       .table {
         flex: 1;
       }

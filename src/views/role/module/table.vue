@@ -9,7 +9,7 @@
               @sort-change="sortChange"
               :cell-style="{padding: '4px'}"
               :ref="defaultSelected?'mytable':''"
-              height="690">
+              height="600">
       <template v-for="(item, index) in tableHeader">
         <el-table-column v-if="item.prop==='operation'"
                          :label="item.label"

@@ -64,12 +64,8 @@ export default {
     };
   },
   mounted () {
-    // document.addEventListener("keydown", (e) => {
-    //   let key = window.event.keyCode;
-    //   if (key == 13) {
-    //     this.handleLogin("loginForm");
-    //   }
-    // });
+    const isDev = process.env.NODE_ENV === 'development'
+    this.loginForm = isDev ? { username: "lxx", password: "lxia00521..." } : { username: "test", password: "123456" }
   },
   methods: {
     /**
@@ -117,7 +113,7 @@ export default {
 <style lang="scss" scoped>
 $btnColot: #a2d1f5; //#90caf9  #bbdefb  #a2d1f5
 .login-form {
-  width: 20%;
+  width: 350px;
   position: absolute;
   left: 40%;
   top: 10%;

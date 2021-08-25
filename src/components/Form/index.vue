@@ -6,7 +6,9 @@
   <el-form ref="myform"
            :rules="rules"
            :model="formModel"
-           :size="formSize">
+           :size="formSize"
+           :inline="inline"
+           class="demo-form-inline">
     <template v-for="(item,index) in dialogFormElement">
       <div :key="index">
         <el-col :span="item.colSpan">
@@ -37,7 +39,6 @@
                       @change="item.change?item.change():''"
                       @blur="item.blur?item.blur($event):''"
                       :placeholder="item.placeholder"></el-input>
-            <!-- 文本域 -->
             <!-- 占位-->
             <el-input clearable
                       v-if="item.type==='none'"
@@ -98,6 +99,9 @@
                             :format="item.format"
                             :value-format="item.valueFormat">
             </el-date-picker>
+            <el-button type="primary"
+                       v-if="item.type==='btn'"
+                       @click="onQuerySubmit">查询</el-button>
             <!-- <vue-json-editor v-if="item.type === 'json'"
                              v-model="formModel[item.prop]"
                              :showBtns="false"
@@ -117,7 +121,7 @@
 // import vueJsonEditor from 'vue-json-editor'
 export default {
   //   components: { vueJsonEditor },
-  data() {
+  data () {
     return {
     }
   },
@@ -146,9 +150,17 @@ export default {
       type: Array,
       default: () => []
     },
+    inline: {
+      type: Boolean,
+      default: false
+    },
+    showBtn: {
+      type: Boolean,
+      default: false
+    },
   },
   methods: {
-    validateForm() {
+    validateForm () {
       let flag = null
       this.$refs['myform'].validate((valid) => {
         if (valid) {
@@ -159,12 +171,14 @@ export default {
       })
       return flag
     },
+    onQuerySubmit () {
+      this.$emit("onQuerySubmit")
+    }
+  },
+  mounted () {
 
   },
-  mounted() {
-
-  },
-  created() {
+  created () {
 
   },
 

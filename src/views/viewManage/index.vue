@@ -86,7 +86,7 @@ import { findAllListApi, addListApi, deleteListApi, updateListApi } from '@/api/
 import { formatTree } from "@/utils"
 export default {
   components: {},
-  data() {
+  data () {
     return {
       name: "页面管理",
       treeData: [],
@@ -120,22 +120,22 @@ export default {
       direction: 'rtl',//抽屉状态
     };
   },
-  mounted() {
+  mounted () {
     this.findAllList()
   },
   computed: {
-    AddChildrenShow() { // 新增子级菜单按钮的状态
+    AddChildrenShow () { // 新增子级菜单按钮的状态
       return !this.showForm
     }
   },
   methods: {
     /**弹出框取消按钮*/
-    handleCloseDialog() {
+    handleCloseDialog () {
       this.dialogFormVisible = false;
       this.register()
     },
     /**重置表单 */
-    register(flag = true) {
+    register (flag = true) {
       this.formModel = {}
       this.formElement.forEach((item) => {
         this.$set(this.formModel, item.prop, "");
@@ -145,7 +145,7 @@ export default {
       }
     },
     /**弹出框确定按钮*/
-    handleDialogSubmit() {
+    handleDialogSubmit () {
       let flag = this.$refs["myform"].validateForm();
       if (flag) {
         switch (this.dialogTitle) {
@@ -161,7 +161,7 @@ export default {
       }
     },
     /**点击新增一级菜单按钮 */
-    handleAdd(title) {
+    handleAdd (title) {
       this.drawerTitle = title
       this.drawerShow = true
       //   this.dialogFormVisible = true
@@ -170,13 +170,13 @@ export default {
     },
 
     /**新增子节点 */
-    handleNode(data) {
+    handleNode (data) {
       this.dialogFormVisible = true
       this.dialogTitle = "新增"
       this.idParent = data.idPage
     },
     /*删除节点*/
-    handleDelete(node, data) {
+    handleDelete (node, data) {
       this.$confirm("此操作将把这条数据删除, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -206,7 +206,7 @@ export default {
         .catch();
     },
     /**编辑节点 */
-    handleEdit(data) {
+    handleEdit (data) {
       this.dialogTitle = "编辑"
       this.register(false)
       for (let item of this.formElement) {
@@ -215,7 +215,7 @@ export default {
       this.dialogFormVisible = true;
     },
     /**获取所有的页面--异步请求 */
-    findAllList() {
+    findAllList () {
       findAllListApi().then(response => {
         this.allPageList = response.dataList
         this.treeData = formatTree(response.dataList, "idParent", "idView")
@@ -223,7 +223,7 @@ export default {
       })
     },
     /**新增--异步请求 */
-    saveData(postData) {
+    saveData (postData) {
       addListApi(postData).then(response => {
         console.log(response);
         if (response.statusCode === 200) {
@@ -238,7 +238,7 @@ export default {
       })
     },
     /**编辑--异步操作 */
-    updateData() {
+    updateData () {
       let postData = JSON.parse(JSON.stringify(this.formModel));
       updateListApi(postData).then(response => {
         if (response.statusCode === 200) {
@@ -252,7 +252,7 @@ export default {
     /**
      * 点击节点时
      */
-    nodeClick(data, node, self) {
+    nodeClick (data, node, self) {
       this.showForm = true
       this.menusNodeName = data.title
       this.idParent = data[this.idKey]
@@ -261,7 +261,7 @@ export default {
     /**
      * 弹出框提交按钮
      */
-    handleSubmit() {
+    handleSubmit () {
       let data = JSON.parse(JSON.stringify(this.AddFormModel));
       data.idParent = this.drawerTitle == "新增一级菜单" ? '0' : this.idParent
       //   console.log(data);
@@ -282,7 +282,7 @@ export default {
 }
 .content {
   height: 100%;
-  min-width: 1360px;
+
   width: 100%;
   padding: 10px;
   .grid {

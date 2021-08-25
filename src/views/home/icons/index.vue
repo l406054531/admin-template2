@@ -15,7 +15,7 @@
 
 <script>
 export default {
-  data() {
+  data () {
     return {
       icons: [
         {
@@ -59,7 +59,7 @@ export default {
 <style lang='scss' scoped>
 .aliIcon {
   display: grid;
-  grid-template-columns: repeat(8, 195px);
+  grid-template-columns: repeat(8, 185px);
   justify-content: space-between;
   .block {
     height: 78px;

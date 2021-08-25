@@ -20,9 +20,6 @@
           <template slot-scope="scope">
             <el-button type="text"
                        size="small"
-                       @click="handleUpdate(scope.row)">编辑<i class="el-icon-edit" /></el-button>
-            <el-button type="text"
-                       size="small"
                        @click="handleDelete(scope.row)">删除<i class="el-icon-delete" /></el-button>
 
             <!-- <el-button type="text"
@@ -54,7 +51,7 @@
 </template>
 
 <script>
-import { findPageListApi } from '@/api/user.js';
+import { findPageListApi } from '@/api/accessRecord.js';
 export default {
   name: 'Mytable',
   props: {
@@ -102,10 +99,6 @@ export default {
     //搜索成功传过来的数据
     searchData (data) {
       this.tableData = data
-    },
-    /** 点击修改**/
-    handleUpdate (data) {
-      this.$emit('handleUpdate', data)
     },
     /** 点击删除**/
     handleDelete (data) {

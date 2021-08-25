@@ -17,7 +17,7 @@ import aliIcon from "./icons/index.vue"
 import char from "./char/index.vue"
 export default {
   components: { topBlock, aliIcon, char },
-  data() {
+  data () {
     return {
 
     };
@@ -30,6 +30,7 @@ export default {
   height: 100%;
   .icon {
     margin-top: 20px;
+    margin-bottom: 20px;
   }
 }
 </style>
