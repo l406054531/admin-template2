@@ -4,12 +4,12 @@
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.28s;
+  transition: opacity 0.28s;
 }
 
 .fade-enter,
 .fade-leave-active {
-    opacity: 0;
+  opacity: 0;
 }
 
 
@@ -17,17 +17,17 @@
 
 .fade-transform-leave-active,
 .fade-transform-enter-active {
-    transition: all .2s;
+  transition: all .2s;
 }
 
 .fade-transform-enter {
-    opacity: 0;
-    transform: translateX(-30px);
+  opacity: 0;
+  transform: translateX(-30px);
 }
 
 .fade-transform-leave-to {
-    opacity: 0;
-    transform: translateX(30px);
+  opacity: 0;
+  transform: translateX(30px);
 }
 
 
@@ -35,19 +35,19 @@
 
 .breadcrumb-enter-active,
 .breadcrumb-leave-active {
-    transition: all .3s;
+  transition: all .3s;
 }
 
 .breadcrumb-enter,
 .breadcrumb-leave-active {
-    opacity: 0;
-    transform: translateX(20px);
+  opacity: 0;
+  transform: translateX(20px);
 }
 
 .breadcrumb-move {
-    transition: all .3s;
+  transition: all .3s;
 }
 
 .breadcrumb-leave-active {
-    position: absolute;
+  position: absolute;
 }

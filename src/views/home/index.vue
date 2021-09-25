@@ -1,7 +1,8 @@
 <template>
   <div class="main">
     <div class="top">
-      <top-block></top-block>
+      <!-- <top-block></top-block> -->
+      <visit-sum></visit-sum>
     </div>
     <div class="icon">
       <ali-icon></ali-icon>
@@ -12,11 +13,12 @@
   </div>
 </template>
 <script>
-import topBlock from "./topBlock/index"
-import aliIcon from "./icons/index.vue"
-import char from "./char/index.vue"
+import topBlock from "./topBlock"
+import aliIcon from "./icons"
+import char from "./char"
+import visitSum from './visitSum';
 export default {
-  components: { topBlock, aliIcon, char },
+  components: { topBlock, aliIcon, char, visitSum },
   data () {
     return {
 

@@ -25,13 +25,6 @@
             <el-button type="text"
                        size="small"
                        @click="handleDelete(scope.row)">删除<i class="el-icon-delete" /></el-button>
-            <el-button type="text"
-                       size="small"
-                       @click="handlePermissionAssignmen(scope.row)">权限分配<i class="el-icon-s-operation" /></el-button>
-            <!-- <el-button type="text"
-                       size="small"
-                       @click="handleUserBinding(scope.row)">用户绑定<i class="el-icon-delete" /></el-button> -->
-
           </template>
         </el-table-column>
 
@@ -113,14 +106,6 @@ export default {
     /** 点击删除**/
     handleDelete (data) {
       this.$emit('handleDelete', data)
-    },
-    /*权限分配*/
-    handlePermissionAssignmen (data) {
-      this.$emit('handlePermissionAssignmen', data)
-    },
-    /**用户绑定 */
-    handleUserBinding (data) {
-      this.$emit('handleUserBinding', data)
     },
     /**排序 */
     sortChange (column) {

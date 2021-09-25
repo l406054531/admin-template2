@@ -1,7 +1,7 @@
 <template>
   <div class="main">
     <!-- 地图 -->
-    <baiduMpa @loaded="loaded"></baiduMpa>
+    <leafletMap @loaded="loaded"></leafletMap>
     <!-- 单选框 -->
     <dv-border-box-8 class="radio">
       <div>
@@ -14,79 +14,81 @@
         </el-radio-group>
       </div>
     </dv-border-box-8>
-
   </div>
 </template>
+
 <script>
-import baiduMpa from "../../components/baiduMap"
+import leafletMap from '@/components/leafletMap/index.vue';
 import { findSameCoordinateAll } from '@/api/accessRecord';
 import { scatter, options } from './options';
 export default {
-  components: { baiduMpa },
+  components: { leafletMap },
   data () {
     return {
-      myChart: null,// echarts实例
-      map: null,// 地图实例
-
+      L: null,//leaflet实例
+      map: null,//地图实例
       radio: '访问数量',//单选框model
-      radioList: [
+      radioList: [//单选框列表
         {
-          label: '访问数量',
-          value: {}
+          label: '访问数量',// 显示的文字
+          value: {}// echarts图表数据
         },
         {
           label: '无',
           value: {
-            coordinateSystem: 'bmap',
+            type: 'scatter',
+            coordinateSystem: 'geo',
             data: []
-          }
+          },
         },
-      ]
-
-    };
+      ],
+    }
   },
   mounted () {
     this.getData()
   },
   computed: {
-    scatter () {
+    scatter () {// 散点图配置
       return scatter
     },
-    options () {
+    options () {// echarts配置
       return options
     },
   },
   methods: {
     /**
-     * @description 获取实例
+     * @description 获取地图实例
      */
-    loaded ({ map, myChart }) {
-      this.myChart = myChart
+    loaded ({ map, L }) {
+      this.L = L
       this.map = map
     },
     /**
-     * @description 获取数据
+     * @description 获取后端数据--访问记录
      */
     getData () {
       findSameCoordinateAll().then(response => {
         this.scatter.data = response.dataList
         this.options.series[0] = this.scatter
         this.radioList[0].value = this.scatter
-        this.myChart.setOption(this.options);
+        this.L.overlayEcharts(this.options).addTo(this.map);//绘制echarts
       })
     },
     /**
-     * @description 单选框change事件
+     * @description 单选框Change事件  重新绘制echarts
      */
     radioGroupChange (v) {
       this.options.series[0] = v.value
-      this.myChart.setOption(this.options);
+      this.L.overlayEcharts(this.options).addTo(this.map);//绘制echarts
+      const { lng, lat } = this.map.getCenter()//获取当前中心点
+      const zoom = this.map.getZoom()//获取当前缩放等级
+      this.map.setView([lat, lng], zoom)//重新设置缩放等级以及中心点
     }
   }
-}
 
+}
 </script>
-<style lang='scss' scoped>
+<style lang="scss"  scoped>
 .main {
   height: 100%;
   .radio {

@@ -1,7 +1,8 @@
 <template>
   <el-form :inline="true"
            :model="formModel"
-           class="demo-form-inline">
+           class="demo-form-inline"
+           size="small">
     <template v-for="(item,index) in formElement">
       <el-form-item :key="index"
                     :label="item.label"
@@ -13,6 +14,7 @@
                   v-if="item.type==='input'"
                   v-model="formModel[item.prop]"
                   @change="item.change?item.change():''"
+                  @clear="item.clear?item.clear():''"
                   @blur="item.blur?item.blur($event):''"
                   :placeholder="item.placeholder"></el-input>
         <!-- 选择器    带搜索 filterable  多选multiple-->
@@ -60,6 +62,7 @@
 
     <el-form-item>
       <el-button type="primary"
+                 size="small"
                  @click="handleSearch">查询</el-button>
     </el-form-item>
   </el-form>

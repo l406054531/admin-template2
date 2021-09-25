@@ -8,6 +8,25 @@ export function findPageListApi (params) {
     params
   })
 }
+export function findSameCoordinateAll (params) {
+  return request({
+    baseURL,
+    url: '/accessRecord/findSameCoordinateAll',
+    method: 'get',
+    params
+  })
+}
+
+
+export function findTotal (params) {
+  return request({
+    baseURL,
+    url: '/accessRecord/findTotal',
+    method: 'get',
+    params
+  })
+}
+
 export function findAllApi () {
   return request({
     baseURL,

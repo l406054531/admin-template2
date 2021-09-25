@@ -1,6 +1,8 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger :is-active="sidebar.opened"
+               class="hamburger-container"
+               @toggleClick="toggleSideBar" />
     <!--<breadcrumb class="breadcrumb-container" />-->
     <tags-view class="tagview-container" />
   </div>
@@ -23,7 +25,7 @@ export default {
     ...mapGetters(['sidebar'])
   },
   methods: {
-    toggleSideBar() {
+    toggleSideBar () {
       this.$store.dispatch('app/toggleSideBar')
     }
   }
@@ -38,8 +40,8 @@ export default {
   /* update by lct on 20190718 */
   position: relative;
   background: #fff;
-  z-index: 10;
-  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  z-index: 999;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
   /* add by lct on 20190718 */
   display: flex;
   border-bottom: 1px solid #d8dce5;
@@ -53,11 +55,11 @@ export default {
     float: left;
     cursor: pointer;
     border-right: 1px solid #edf0f5;
-    transition: background .3s;
-    -webkit-tap-highlight-color:transparent;
+    transition: background 0.3s;
+    -webkit-tap-highlight-color: transparent;
 
     &:hover {
-      background: rgba(0, 0, 0, .025)
+      background: rgba(0, 0, 0, 0.025);
     }
   }
 

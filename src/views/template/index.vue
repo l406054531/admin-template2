@@ -61,14 +61,6 @@
         </div>
       </el-dialog>
 
-      <el-drawer title="权限分配"
-                 size="20%"
-                 :visible.sync="drawer"
-                 :direction="direction">
-        <tree :currentRoleInfo="currentRoleInfo"
-              @closeDrawer="closeDrawer"
-              v-if="drawer" />
-      </el-drawer>
     </div>
   </div>
 
@@ -77,12 +69,10 @@
 <script>
 
 import myTable from './module/table';  //表格
-import tree from './module/tree.vue';  //表格
 import { addListApi, deleteListApi, updateListApi } from '@/api/role.js'; //异步方法
 import { batchDelete } from '@/api/batch'; //异步方法
 export default {
-  components: { myTable, tree },
-  //   name:"角色管理",
+  components: { myTable },
   data () {
     return {
       tableHeader: [ //表格头部
@@ -107,7 +97,6 @@ export default {
       rules: {   //表单验证
         roleField: [{ required: true, message: '请输入字段', trigger: 'blur' }],
         roleName: [{ required: true, message: '请输入名称', trigger: 'blur' }],
-        // longitude: [{ validator: longitudeCheck, trigger: 'change' }],
       },
       dialogFormModel: {}, //表单双向绑定
       dialogFormElement: [  //表单元素
@@ -115,15 +104,10 @@ export default {
         { label: '角色名称', prop: 'roleName', type: 'input' },
         { label: '', prop: 'idRole', type: 'id' },
       ],
-      search: {
-
-      },
+      search: {},
       multipleSelection: [],//勾选框选择的内容
       idKey: 'idRole',
       url: 'role',
-      drawer: false,//抽屉状态
-      direction: 'rtl',//抽屉方向
-      currentRoleInfo: {},//点击权限分配后的当前条角色的信息
       searchFormModel: {},
       searchFormElement: [
         {
@@ -135,7 +119,6 @@ export default {
           }
         },
       ]
-
     };
   },
   mounted () {
@@ -197,11 +180,6 @@ export default {
       if (flag) {
         this.$refs['myform'].$refs['myform'].resetFields();
       }
-    },
-    /** 点击权限分配 */
-    handlePermissionAssignmen (data) {
-      this.currentRoleInfo = data
-      this.drawer = true
     },
     /**点击表格删除--异步请求 */
     handleDelete (data) {
@@ -299,10 +277,6 @@ export default {
       } else {
         return false;
       }
-    },
-    /**关闭抽屉 */
-    closeDrawer () {
-      this.drawer = false
     },
     /**批量删除 */
     handleBatchDel () {

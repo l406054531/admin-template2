@@ -7,6 +7,7 @@
               highlight-current-row
               :default-sort="{prop: '', order: ''}"
               @sort-change="sortChange"
+              @selection-change="handleSelectionChange"
               :cell-style="{padding: '4px'}"
               :ref="defaultSelected?'mytable':''"
               height="600">
@@ -18,6 +19,12 @@
                          :prop="item.prop"
                          :min-width="item.width">
           <template slot-scope="scope">
+            <el-button type="text"
+                       size="small"
+                       @click="handleResetPassword(scope.row)">重置密码<i class="el-icon-refresh" /></el-button>
+            <el-button type="text"
+                       size="small"
+                       @click="handleViewImg(scope.row)">头像预览<i class="el-icon-refresh" /></el-button>
             <el-button type="text"
                        size="small"
                        @click="handleUpdate(scope.row)">编辑<i class="el-icon-edit" /></el-button>
@@ -54,7 +61,7 @@
 </template>
 
 <script>
-import { findPageListApi } from '@/api/user.js';
+import { findPageListApi, resetPassword } from '@/api/user.js';
 export default {
   name: 'Mytable',
   props: {
@@ -111,10 +118,9 @@ export default {
     handleDelete (data) {
       this.$emit('handleDelete', data)
     },
-
-    /**用户绑定 */
-    handleUserBinding (data) {
-      this.$emit('handleUserBinding', data)
+    /**图片预览 */
+    handleViewImg (data) {
+      this.$emit('handleViewImg', data)
     },
     /**排序 */
     sortChange (column) {
@@ -123,6 +129,38 @@ export default {
       params.sort = {}
       params.sort[column.prop] = order
       this.findPageList(params)
+    },
+    /**点击重置密码 */
+    handleResetPassword (data) {
+      this.$confirm("此操作将把密码重置为123456, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          resetPassword({ idUser: data.idUser }).then(response => {
+            if (response.statusCode === 200) {
+              this.$message({
+                type: "success",
+                message: "重置成功"
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: response.message,
+              });
+            }
+          })
+        })
+        .catch();
+
+    },
+    //勾选中的数据
+    handleSelectionChange (val) {
+      let idArr = val.map(item => {
+        return item[this.idKey]  //根据当前模块需要的id进行修改
+      })
+      this.$emit("handleSelectionChange", idArr)
     },
   },
 

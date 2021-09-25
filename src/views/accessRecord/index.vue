@@ -2,19 +2,13 @@
   <div class="content">
     <div class="wrapper">
       <div>
-        <!-- 按钮 -->
-        <button-groud :add="false"
-                      @refresh="handleRefresh" />
+        <el-button type="primary"
+                   size="small"
+                   @click="handleRefresh">刷新</el-button>
         <div class="search-block">
           <search-form :formModel="searchFormModel"
                        :formElement="searchFormElement"
                        @handleSearch="handleSearch"> </search-form>
-          <!-- <my-form ref="myform"
-                   labelWidth="100px"
-                   :inline="true"
-                   :showBtn="true"
-                   :formModel="searchFormModel"
-                   :dialogFormElement="searchFormElement"></my-form> -->
 
         </div>
       </div>
@@ -79,7 +73,7 @@ export default {
       },
       search: {},
       multipleSelection: [],//勾选框选择的内容
-      idKey: 'idIpAddress',
+      idKey: 'idAccessRecord',
       searchFormModel: {},
       searchFormElement: [
         {
@@ -179,6 +173,7 @@ export default {
     padding: 10px;
     .search-block {
       float: right;
+      height: 50px;
       span {
         margin: 0 10px;
         color: rgb(143, 138, 138);

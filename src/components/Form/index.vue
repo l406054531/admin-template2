@@ -19,11 +19,10 @@
                         v-if="item.type==='coordinate'">
             <template v-for="(cItem,cIndex) in item.children">
               <el-input clearable
-                        :key="cIndex"
                         v-model="formModel[cItem.prop]"
-                        @change="cItem.change?cItem.change():''"
+                        :key="cIndex"
                         :placeholder="cItem.placeholder"
-                        style="width:33.3%"></el-input>
+                        @change="cItem.change?cItem.change():''"></el-input>
 
             </template>
           </el-form-item>
@@ -34,6 +33,7 @@
             <!-- 输入框 -->
             <el-input clearable
                       :disabled="item.disabled"
+                      :show-password="item.showPassword"
                       v-if="item.type==='input'"
                       v-model="formModel[item.prop]"
                       @change="item.change?item.change():''"

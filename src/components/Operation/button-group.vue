@@ -1,6 +1,6 @@
 <template>
   <!--<div>-->
-  <el-button-group>
+  <!-- <el-button-group>
     <el-button v-if="add"
                :type="type"
                :size="size"
@@ -8,21 +8,27 @@
                :icon="icon  ? 'el-icon-circle-plus-outline': ''"
                @click="handleAdd">{{addText}}
     </el-button>
-    <!--      <el-button-->
-    <!--        v-if="del"-->
-    <!--        :type="type"-->
-    <!--        :size="size"-->
-    <!--        :icon="icon ? 'el-icon-delete': ''"-->
-    <!--        @click="handleDel"-->
-    <!--      >{{delText}}</el-button>-->
     <el-button v-if="refresh"
                :type="type"
                :size="size"
                :icon="icon ? 'el-icon-refresh': ''"
                @click="handleRefresh">{{refreshText}}
     </el-button>
-  </el-button-group>
+  </el-button-group> -->
   <!--</div>-->
+  <el-dropdown @command="command">
+    <el-button type="primary"
+               size="small">
+      更多操作<i class="el-icon-arrow-down el-icon--right"></i>
+    </el-button>
+    <el-dropdown-menu slot="dropdown">
+      <template v-for="(item,index) in dropdownItems">
+        <el-dropdown-item :key="index"
+                          v-if="item.show"
+                          :command="item.value">{{item.label}}</el-dropdown-item>
+      </template>
+    </el-dropdown-menu>
+  </el-dropdown>
 </template>
 
 <script>
@@ -79,15 +85,59 @@ export default {
       default: true
     }
   },
+  data () {
+    return {
+      dropdownItems: [
+        {
+          label: '新增',
+          value: 'add',
+          show: null
+        },
+        {
+          label: '刷新',
+          value: 'refresh',
+          show: null
+        },
+        {
+          label: '批量删除',
+          value: 'batchDel',
+          show: null,
+        },
+
+      ]
+    }
+  },
+  mounted () {
+
+    this.dropdownItems[0].show = this.add
+    this.dropdownItems[1].show = this.refresh
+    this.dropdownItems[2].show = this.del
+  },
   methods: {
-    handleAdd() {
+    handleAdd () {
       this.$emit('add')
     },
-    handleDel() {
-      this.$emit('del')
+    handleDel () {
+      this.$emit('handleBatchDel')
     },
-    handleRefresh() {
+    handleRefresh () {
       this.$emit('refresh')
+    },
+    command (v) {
+      switch (v) {
+        case 'add':
+          this.handleAdd()
+          break;
+        case 'refresh':
+          this.handleRefresh()
+          break;
+        case 'batchDel':
+          this.handleDel()
+          break;
+        default:
+          break;
+
+      }
     }
   }
 }

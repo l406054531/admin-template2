@@ -13,17 +13,23 @@ import "./icons/iconfont/iconfont.css"
 
 import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
+
 import ECharts from 'vue-echarts'
 Vue.component('v-chart', ECharts)
 
 import countTo from 'vue-count-to';
 Vue.component('count-to', countTo)
 
+import moment from 'moment';
+Vue.prototype.$moment = moment
+
+import 'leaflet'
+import 'leaflet/dist/leaflet.css'
 
 Vue.config.productionTip = false
 
 new Vue({
-    router,
-    store,
-    render: h => h(App)
+  router,
+  store,
+  render: h => h(App)
 }).$mount('#app')

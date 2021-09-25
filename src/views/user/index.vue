@@ -2,12 +2,16 @@
   <div class="content">
     <div class="wrapper">
       <!-- 按钮 -->
-      <div style="margin-bottom:10px">
+      <div>
         <button-groud @add="handleAdd"
-                      @refresh="handleRefresh" />
+                      @refresh="handleRefresh"
+                      @handleBatchDel="handleBatchDel" />
         <div class="search-block">
-        </div>
+          <search-form :formModel="searchFormModel"
+                       :formElement="searchFormElement"
+                       @handleSearch="handleSearch"> </search-form>
 
+        </div>
       </div>
       <!-- 表格 -->
       <div class="main">
@@ -19,6 +23,8 @@
                     :idKey="idKey"
                     @handleUpdate="handleUpdate"
                     @handleDelete="handleDelete"
+                    @handleViewImg="handleViewImg"
+                    @handleSelectionChange="handleSelectionChange"
                     @tableDataList="tableDataList"
                     style="margin-bottom: 20px"
                     ref="mytableRef" />
@@ -54,7 +60,15 @@
                      @click="handleDialogSubmit">确 定</el-button>
         </div>
       </el-dialog>
-
+      <el-dialog title="头像预览"
+                 width="350px"
+                 :visible.sync="dialogVisibleImg"
+                 :close-on-click-modal="false"
+                 class="dialogClass">
+        <div>
+          <el-image :src="imgSrc"></el-image>
+        </div>
+      </el-dialog>
     </div>
   </div>
 
@@ -64,7 +78,9 @@
 
 import myTable from './module/table';  //表格
 import { addListApi, deleteListApi, updateListApi } from '@/api/user.js'; //异步方法
+import { batchDelete } from '@/api/batch'; //异步方法
 import { findAllList } from '@/api/role.js'; //异步方法
+import { cosUrl } from '@/config';
 
 export default {
   components: { myTable },
@@ -72,12 +88,14 @@ export default {
   data () {
     return {
       tableHeader: [ //表格头部
-        // { label: '', prop: '', type: 'selection' },
+        { label: '', prop: '', type: 'selection' },
         { label: '-', prop: 'index', type: 'index' },
         { label: '用户账号', prop: 'username' },
         { label: '用户名称', prop: 'nickname' },
         { label: '角色', prop: 'userRole' },
-        { label: '操作', prop: 'operation', width: "80" },
+        { label: '手机号码', prop: 'phone' },
+        { label: '邮箱', prop: 'email' },
+        { label: '操作', prop: 'operation', width: "130" },
       ],
       tableParams: { pageNum: 1, pageSize: 20 },  //表格请求参数
       tableKey: null,  //表格Key
@@ -93,32 +111,46 @@ export default {
       dialogFormVisible: false,  //弹出框状态
       rules: {   //表单验证
         username: [{ required: true, message: '请输入用户账号', trigger: 'blur' }],
-        password: [{ required: true, message: '请输入用户密码', trigger: 'blur' }],
+        password: [
+          { required: true, message: '请输入用户密码', trigger: 'blur' },
+          { min: 6, max: 18, message: '长度在 6 到 18 个字符', trigger: 'blur' }
+        ],
         nickname: [{ required: true, message: '请输入用户名称', trigger: 'blur' }],
         userRole: [{ required: true, message: '请选择角色', trigger: 'blur' }],
         // longitude: [{ validator: longitudeCheck, trigger: 'change' }],
       },
       dialogFormModel: {}, //表单双向绑定
-      dialogFormElement: [  //表单元素
-      ],
-      addDialogFormElement: [  //表单元素
-        { label: '用户账号', prop: 'username', type: 'input' },
-        { label: '用户密码', prop: 'password', type: 'input' },
-        { label: '用户名称', prop: 'nickname', type: 'input' },
-        { label: '角色', prop: 'userRole', type: 'select', selectLabel: 'elementName', selectValue: 'elementValue', typeselects: [] },
-        { label: '', prop: 'idUser', type: 'id' },
-      ],
-      editDialogFormElement: [  //表单元素
+      dialogFormElement: [
         { label: '用户账号', prop: 'username', type: 'input' },
         { label: '用户名称', prop: 'nickname', type: 'input' },
         { label: '角色', prop: 'userRole', type: 'select', selectLabel: 'elementName', selectValue: 'elementValue', typeselects: [] },
         { label: '', prop: 'idUser', type: 'id' },
+      ], //表单元素
+      FormElement: [ // 基础的表单元素
+        { label: '用户账号', prop: 'username', type: 'input' },
+        { label: '用户名称', prop: 'nickname', type: 'input' },
+        { label: '角色', prop: 'userRole', type: 'select', selectLabel: 'elementName', selectValue: 'elementValue', typeselects: [] },
+        { label: '手机号码', prop: 'phone', type: 'input' },
+        { label: '邮箱', prop: 'email', type: 'input' },
+        { label: '', prop: 'idUser', type: 'id' },
       ],
-      search: {
-
-      },
-      multipleSelection: [],//勾选框选择的内容
+      search: {},
+      multipleSelection: [],//勾选中数据的id数组值
       idKey: 'idUser',
+      url: 'user',
+      searchFormModel: {},// 搜索表单
+      searchFormElement: [// 搜索表单的元素
+        {
+          label: "用户名称",
+          prop: "nickname",
+          type: "input",
+          clear: () => {
+            this.handleSearch()
+          }
+        },
+      ],
+      dialogVisibleImg: false,// 预览头像弹出框状态
+      imgSrc: '',//头像图片地址
     };
   },
   mounted () {
@@ -128,7 +160,10 @@ export default {
     /**点击新增 */
     handleAdd () {
       this.dialogTitle = '新增';
-      this.dialogFormElement = this.addDialogFormElement
+      let el = JSON.parse(JSON.stringify(this.FormElement))
+      const obj = { label: '用户密码', prop: 'password', type: 'input', showPassword: true }
+      el.splice(1, 0, obj)
+      this.dialogFormElement = el
       this.dialogFormVisible = true;
     },
     /**点击刷新 */
@@ -142,7 +177,7 @@ export default {
     /**点击表格修改 */
     handleUpdate (data) {
       this.dialogTitle = '编辑';
-      this.dialogFormElement = this.editDialogFormElement
+      this.dialogFormElement = this.FormElement
       this.register(false)
       //赋值
       for (let item of this.dialogFormElement) {
@@ -258,9 +293,7 @@ export default {
       let params = {}
       params.pageNum = 1
       params.pageSize = this.paginationInfo.pagesize
-      params.query = {}
-
-      this.tableParams.query = params.query
+      params.nickname = this.searchFormModel.nickname
       this.$refs.mytableRef.findPageList(params)
     },
 
@@ -280,24 +313,45 @@ export default {
         return false;
       }
     },
+    /**
+     * 获取所有角色
+     */
     findAllRoleList () {
       findAllList().then(response => {
         if (response.statusCode === 200) {
           let arr = response.dataList.map(item => {
             return { label: item.roleName, value: item.roleField }
           })
-          for (let item of this.addDialogFormElement) {
-            if (item.label === '角色') {
-              item.typeselects = arr
-            }
-          }
-          for (let item of this.editDialogFormElement) {
+          for (let item of this.FormElement) {
             if (item.label === '角色') {
               item.typeselects = arr
             }
           }
         }
       })
+    },
+    /**
+     * 头像预览
+     */
+    handleViewImg (data) {
+      this.imgSrc = data.imgName == "" ? cosUrl + "user.png" : cosUrl + data.imgName
+      this.dialogVisibleImg = true
+    },
+    /**
+     * 批量删除
+     */
+    handleBatchDel () {
+      let params = {}
+      params[this.idKey] = this.multipleSelection.toString()
+      batchDelete(params, this.url).then(() => {
+        this.tableKey = Math.random() * 100 + new Date();
+      })
+    },
+    /**
+     * 勾选中的数据的id数组值
+     */
+    handleSelectionChange (idArr) {
+      this.multipleSelection = idArr
     }
   }
 }
@@ -306,7 +360,6 @@ export default {
 <style lang='scss' scoped>
 .content {
   height: 100%;
-
   width: 100%;
   .wrapper {
     height: 100%;
@@ -335,6 +388,13 @@ export default {
         flex: 1;
       }
     }
+  }
+}
+</style>
+<style lang="scss" scoped>
+::v-deep {
+  .el-dialog__body {
+    text-align: center;
   }
 }
 </style>
