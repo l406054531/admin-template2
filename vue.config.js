@@ -52,21 +52,16 @@ module.exports = {
       warnings: false,
       errors: false
     },
-    // proxy: {
-    //     '/api': {
-    //         target: 'http://192.168.1.25:3004',
-    //         changeOrigin: true,
-    //         pathRewrite: {
-    //             '^/api': ''
-    //         }
-    //     },
-    //     '/socket.io': {
-    //         target: 'http://127.0.0.1:3000',
-    //         ws: true,
-    //         changeOrigin: true
-    //     },
+    proxy: {
+      '/api': {
+        target: 'http://47.106.221.76:3000/',
+        changeOrigin: true,
+        pathRewrite: {
+          '^/api': '/'
+        }
+      },
 
-    // }
+    }
   },
 
   configureWebpack: {
