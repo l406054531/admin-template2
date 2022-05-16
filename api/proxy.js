@@ -1,11 +1,11 @@
 const { createProxyMiddleware } = require('http-proxy-middleware')
 module.exports = (req, res) => {
-  let target = 'http://47.106.221.76:3000/'
+  let target = ''
 
-  // if (req.url.startswith('/api')) {
-  //   //这里填目标地址
-    
-  // }
+  if (req.url.startswith('/api')) {
+    //这里填目标地址
+    target = 'http://47.106.221.76:3000/'
+  }
   //创建代理对象并转发请求
   createProxyMiddleware({
     target,

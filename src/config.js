@@ -1,6 +1,6 @@
 
 const isDev = process.env.NODE_ENV === 'development'
-const url = isDev ? 'http://127.0.0.1:3000' : '/api'
+const url = isDev ? 'http://127.0.0.1:3000' : 'http://47.106.221.76:3000'
 // const url = "http://47.106.221.76:3000"
 module.exports = {
   // 网站标题
