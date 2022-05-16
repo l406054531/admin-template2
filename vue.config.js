@@ -2,13 +2,14 @@
 const path = require('path')
 const defaultConfigs = require('./src/config.js')
 const webpack = require('webpack')
-
+const CompressionWebpackPlugin = require('compression-webpack-plugin')
+const productionGzipExtensions = ['js', 'css']
 function resolve (dir) {
   return path.join(__dirname, dir)
 }
 
 const name = defaultConfigs.title // page title
-const port = process.env.port || 8081 // dev port
+const port = process.env.port || 8082 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = {
@@ -44,29 +45,29 @@ module.exports = {
   },
 
   // 开发服务配置
-  // devServer: {
-  //     port: port,
-  //     open: false,
-  //     overlay: {
-  //         warnings: false,
-  //         errors: false
-  //     },
-  //     proxy: {
-  //         '/api': {
-  //             target: 'http://192.168.1.25:3004',
-  //             changeOrigin: true,
-  //             pathRewrite: {
-  //                 '^/api': ''
-  //             }
-  //         },
-  //         '/socket.io': {
-  //             target: 'http://127.0.0.1:3000',
-  //             ws: true,
-  //             changeOrigin: true
-  //         },
+  devServer: {
+    port: port,
+    open: false,
+    overlay: {
+      warnings: false,
+      errors: false
+    },
+    // proxy: {
+    //     '/api': {
+    //         target: 'http://192.168.1.25:3004',
+    //         changeOrigin: true,
+    //         pathRewrite: {
+    //             '^/api': ''
+    //         }
+    //     },
+    //     '/socket.io': {
+    //         target: 'http://127.0.0.1:3000',
+    //         ws: true,
+    //         changeOrigin: true
+    //     },
 
-  //     }
-  // },
+    // }
+  },
 
   configureWebpack: {
     name: name,
@@ -76,7 +77,23 @@ module.exports = {
         '~': resolve('src/styles'),
         '@public': resolve('public')
       }
-    }
+    },
+    plugins: [
+      new webpack.optimize.LimitChunkCountPlugin({
+        maxChunks: 5,
+        minChunkSize: 100
+      }),
+      //下面是下载的插件的配置
+      new CompressionWebpackPlugin({
+        filename: "[file].gz[query]",
+        algorithm: 'gzip',
+        test: new RegExp('\\.(' + productionGzipExtensions.join(" | ") + ")$"),
+        threshold: 0,
+        minRatio: 0.1,
+        deleteOriginalAssets: true
+      }),
+
+    ],
   },
 
   chainWebpack (config) {

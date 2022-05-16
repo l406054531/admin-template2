@@ -1,8 +1,8 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened"
+    <!-- <hamburger :is-active="sidebar.opened"
                class="hamburger-container"
-               @toggleClick="toggleSideBar" />
+               @toggleClick="toggleSideBar" /> -->
     <!--<breadcrumb class="breadcrumb-container" />-->
     <tags-view class="tagview-container" />
   </div>

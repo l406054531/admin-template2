@@ -13,16 +13,16 @@ export default {
       default: ""
     }
   },
-  data() {
+  data () {
     return {
       editor: null
     };
   },
-  mounted() {
+  mounted () {
     this.wangeditorInit()
   },
   methods: {
-    wangeditorInit() {
+    wangeditorInit () {
       this.editor = new E('#main')
       const editor = this.editor
       editor.create()
@@ -33,12 +33,16 @@ export default {
       //   this.setWangeditorHtml()
     },
     /**富文本set内容 */
-    setWangeditorHtml(v) {
+    setWangeditorHtml (v) {
       this.editor.txt.html(v)
     },
     /**富文本change事件 */
-    wangEditorChange(newHtml) {
+    wangEditorChange (newHtml) {
       this.$emit("wangEditorChange", newHtml)
+    },
+    getEditorText () {
+      const text = this.editor.txt.text()
+      return text
     }
   }
 }

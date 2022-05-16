@@ -115,12 +115,11 @@ $btnColot: #a2d1f5; //#90caf9  #bbdefb  #a2d1f5
 .login-form {
   width: 350px;
   position: absolute;
-  left: 40%;
+  left: 50%;
   top: 10%;
+  transform: translateX(-50%);
   z-index: 3;
   padding: 20px;
-  //   border: 1px solid red;
-  //   border-radius: 5px;
   .my-img {
     width: 100px;
     margin: 0 auto;

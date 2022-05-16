@@ -21,7 +21,7 @@ export default {
       }
     },
   },
-  data() {
+  data () {
     return {
       btnActive: 0,
       interval: null,
@@ -29,18 +29,18 @@ export default {
       autoChange: true,
     };
   },
-  mounted() {
+  mounted () {
     if (this.autoChange) {
       this.setInterval()
       this.pauseTabChange()
     }
   },
   methods: {
-    clickBtn(item) {
+    clickBtn (item) {
       this.btnActive = item.value
       this.$emit('clickBtn', item)
     },
-    setInterval() {
+    setInterval () {
       this.interval = setInterval(() => {
         this.btnActive++
         if (this.btnActive >= this.btnData.length) {
@@ -49,7 +49,7 @@ export default {
         this.$emit('clickBtn', this.btnData[this.btnActive])
       }, this.intervalTime)
     },
-    pauseTabChange() {
+    pauseTabChange () {
       let self = this;
       // 监听鼠标滑过
       this.$refs.main.addEventListener("mouseover", function () {

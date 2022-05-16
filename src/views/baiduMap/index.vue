@@ -46,7 +46,7 @@ export default {
     };
   },
   mounted () {
-    this.getData()
+
   },
   computed: {
     scatter () {
@@ -63,6 +63,7 @@ export default {
     loaded ({ map, myChart }) {
       this.myChart = myChart
       this.map = map
+      this.getData()
     },
     /**
      * @description 获取数据
@@ -70,8 +71,10 @@ export default {
     getData () {
       findSameCoordinateAll().then(response => {
         this.scatter.data = response.dataList
+        console.log(response.dataList);
         this.options.series[0] = this.scatter
         this.radioList[0].value = this.scatter
+        // console.log(this.myChart.setOption);
         this.myChart.setOption(this.options);
       })
     },

@@ -127,13 +127,14 @@ export default {
       })
     },
     refreshSelectedTag (view) {
+      console.log(view);
       this.$store.dispatch('tagsView/delCachedView', view).then(() => {
         const { fullPath } = view
         this.$nextTick(() => {
-          this.$router.push(fullPath)
-          // this.$router.replace({
-          //   path: fullPath
-          // })
+          // this.$router.push(fullPath)
+          this.$router.replace({
+            path: '/redirect' + fullPath
+          })
         })
       })
     },
@@ -209,6 +210,7 @@ export default {
   border-bottom: 1px solid #d8dce5;
   .tags-view-wrapper {
     .tags-view-item {
+      border-radius: 5px;
       display: inline-block;
       position: relative;
       cursor: pointer;

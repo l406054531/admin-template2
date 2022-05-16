@@ -3,7 +3,7 @@
     <!-- 地图 -->
     <leafletMap @loaded="loaded"></leafletMap>
     <!-- 单选框 -->
-    <dv-border-box-8 class="radio">
+    <!-- <dv-border-box-8 class="radio">
       <div>
         <el-radio-group v-model="radio">
           <template v-for="(item,index) in radioList">
@@ -13,7 +13,7 @@
           </template>
         </el-radio-group>
       </div>
-    </dv-border-box-8>
+    </dv-border-box-8> -->
   </div>
 </template>
 

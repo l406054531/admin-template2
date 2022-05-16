@@ -1,9 +1,9 @@
 import request from '@/utils/request'
-import { loginURL, baseURL } from '@/config'
+import { baseURL } from '@/config'
 
 export function login (data) {
   return request({
-    baseURL: loginURL,
+    baseURL,
     url: '/login',
     method: 'post',
     data
@@ -18,6 +18,7 @@ export function findPageListApi (params) {
     params
   })
 }
+
 export function deleteListApi (params) {
   return request({
     baseURL,

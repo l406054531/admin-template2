@@ -1,11 +1,13 @@
 <template>
   <div class="header">
     <div class="left-title">
-      <!-- <i class="el-icon-eleme"></i> -->
-      <img src="../../assets/logo.png"
+      <hamburger :is-active="sidebar.opened"
+                 class="hamburger-container"
+                 @toggleClick="toggleSideBar" />
+      <!-- <img src="../../assets/logo.png"
            alt=""
            class="logo">
-      <h4> {{title}}</h4>
+      <h4> {{title}}</h4> -->
     </div>
     <div class="right-menu">
       <el-dropdown @command="command"
@@ -23,14 +25,13 @@
         </div>
         <el-dropdown-menu slot="dropdown"
                           class="user-dropdown">
-          <template v-for="(item, index) in dropdowns">
-            <el-dropdown-item :key="index"
-                              :command="item.value"
-                              :disabled="item.disabled"
-                              divided>
-              {{item.label}}
-            </el-dropdown-item>
-          </template>
+          <el-dropdown-item v-for="(item, index) in dropdowns"
+                            :key="index"
+                            :command="item.value"
+                            :disabled="item.disabled"
+                            divided>
+            {{item.label}}
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -82,11 +83,15 @@
 
 <script>
 import { title } from '@/config'
-import { getUserInfo } from "@/utils/cache"
+import { Storage } from '@/utils/Storage';// 浏览器缓存实例
+import { StorageKey } from "@/config"
 import { updatePassword } from '@/api/user';
 import { uploadUserImg, updateUserImg } from '@/api/upload';
 import { cosUrl } from '@/config';
+import Hamburger from '@/components/Hamburger'
+import { mapGetters } from 'vuex'
 export default {
+  components: { Hamburger },
   name: 'Header',
   data () {
     const confirmassword = (rule, value, callback) => {
@@ -144,11 +149,12 @@ export default {
   },
   computed: {
     name () {
-      return JSON.parse(getUserInfo()).nickname
+      return Storage.get(StorageKey.userinfoKey).nickname
     },
     userInfo () {
-      return JSON.parse(getUserInfo())
-    }
+      return Storage.get(StorageKey.userinfoKey)
+    },
+    ...mapGetters(['sidebar'])
   },
   mounted () {
     this.init()
@@ -161,23 +167,27 @@ export default {
     async logout () {
       sessionStorage.clear();
       this.$router.push(`/login`)
-      window.location.reload()
+      await this.$store.dispatch("user/setIsLogin", false)
     },
     command (v) {
-      if (v == 'shouye') {
-        this.$router.push("/home")
-      }
-      else if (v == "updatePassword") {
-        this.dialogFormVisible = true
-      }
-      else if (v == "uploadImg") {
-        this.$refs.uploadBtnRef.$el.click()
-      }
-      else if (v == "updateImg") {
-        this.$refs.updateBtnRef.$el.click()
-      }
-      else if (v == "logout") {
-        this.logout()
+      switch (v) {
+        case 'shouye':
+          this.$router.push("/home")
+          break;
+        case 'updatePassword':
+          this.dialogFormVisible = true
+          break;
+        case 'uploadImg':
+          this.$refs.uploadBtnRef.$el.click()
+          break;
+        case 'updateImg':
+          this.$refs.updateBtnRef.$el.click()
+          break;
+        case 'logout':
+          this.logout()
+          break;
+        default:
+          break;
       }
     },
     /**弹出框取消按钮*/
@@ -269,6 +279,9 @@ export default {
       form.append("path", 'userImg')
       form.append("idUser", idUser)
       return form
+    },
+    toggleSideBar () {
+      this.$store.dispatch('app/toggleSideBar')
     }
   },
 }
@@ -287,7 +300,9 @@ $color: rgb(115, 118, 225);
   justify-content: space-between;
   .left-title {
     color: $color;
-    margin-left: 50px;
+    // margin-left: 50px;
+    display: flex;
+    align-items: center;
     .logo {
       width: 30px;
       float: left;

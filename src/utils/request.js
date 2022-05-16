@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
-import { getToken } from '@/utils/cache';
+import { Storage } from '@/utils/Storage';// 浏览器缓存实例
+import { StorageKey } from "@/config"
 
 const service = axios.create({
   baseURL: "",
@@ -14,10 +15,11 @@ service.interceptors.request.use(
       config.headers['Content-Type'] = 'multipart/form-data'
     }
     //鉴权
-    let token = getToken()
+    let token = Storage.get(StorageKey.tokenKey)
     if (token) {
       config.headers['authorization'] = 'Bearer ' + token
     }
+
 
     return config
   },

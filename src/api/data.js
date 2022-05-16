@@ -1,15 +1,44 @@
 
 import request from '@/utils/request'
 import { baseURL } from '@/config'
-/**
- * 获取数据
- * @param {*} params 参数
- */
-export function getData (params) {
+export function getPageListApi (url, params) {
   return request({
-    baseURL: baseURL,
-    url: '/api/data',
+    baseURL,
+    method: 'get',
+    url: `${url}/findPageList`,
+    params
+  })
+}
+
+export function getAddDataApi (url, data) {
+  return request({
+    baseURL,
     method: 'post',
-    data: params
+    url: `${url}/add`,
+    data
+  })
+}
+export function getUpdateDataApi (url, data) {
+  return request({
+    baseURL,
+    method: 'put',
+    url: `${url}/update`,
+    data
+  })
+}
+export function getDeleteDataApi (url, params) {
+  return request({
+    baseURL,
+    method: 'delete',
+    url: `${url}/delete`,
+    params
+  })
+}
+
+export function getAllDataApi (url) {
+  return request({
+    baseURL,
+    method: 'get',
+    url: `${url}/findAll`,
   })
 }

@@ -182,3 +182,30 @@ export function deWeightThree (arr, key) {
 export function deWeightArr (arr) {
   return Array.from(new Set(arr))
 }
+/**
+ * @description 构造路由
+ */
+
+export function generateRouter (userRouters) {
+  let newRouters = userRouters.map((r) => {
+    let routes = {
+      name: r.name,
+      meta: { title: r.title, icon: r.icon }
+    }
+    if (r.idParent == 0) {
+      routes.component = () =>
+        import("@/layout")
+      routes.path = r.path
+    } else {
+      routes.component = () =>
+        Promise.resolve(require(`@/views/${r.name}/index.vue`).default)
+      routes.path = r.path.replace("/", "")
+    }
+    if (r.children) {
+      routes.children = generateRouter(r.children);
+    }
+    return routes;
+  });
+  return newRouters;
+}
+

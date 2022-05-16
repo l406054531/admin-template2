@@ -1,9 +1,19 @@
 import { login } from '@/api/user';
+
 import { formatTree } from "@/utils"
-import { getToken, setToken, setMenu, getUserInfo, setUserInfo } from '@/utils/cache';
+
+import { StorageKey } from '@/config';
+
+import { Storage } from '@/utils/Storage';
+
+
+const tokenKey = StorageKey.tokenKey
+const menuKey = StorageKey.menuKey
+const userinfoKey = StorageKey.userinfoKey
+
 const state = {
-  token: getToken(),
-  userInfo: getUserInfo(),
+  token: Storage.get(tokenKey),
+  userInfo: Storage.get(userinfoKey),
   isLogin: false,
   routes: null,
   name: "",
@@ -30,15 +40,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       login(usetInfo).then(response => {
         let { access_token, menus, data } = response
-        commit("SET_NAME", data.nickname)
-        menus = JSON.stringify(formatTree(menus, "idParent", "idView"));
-        data = JSON.stringify(data);
-        commit("SET_TOKEN", access_token)
-        commit("USER_INFO", data)
-        setToken(access_token)
-        console.log(getToken());
-        setUserInfo(data)
-        setMenu(menus)
+        menus = formatTree(menus, "idParent", "idView")
+        Storage.set(tokenKey, access_token)
+        Storage.set(menuKey, menus)
+        Storage.set(userinfoKey, data)
         resolve()
       }).catch(error => {
         reject(error)
@@ -46,8 +51,10 @@ const actions = {
     })
   },
 
-  async findIsLogin ({ commit }, routes) {
-    commit("SET_isLogin", true)
+  async setIsLogin ({ commit }, val) {
+    commit("SET_isLogin", val)
+  },
+  async setRoutes ({ commit }, routes) {
     commit("SET_ROUTES", routes)
   }
 }

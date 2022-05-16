@@ -27,7 +27,14 @@ export default {
       zoomControl: false, // 缩放控件
       attributionControl: false // 隐藏文字版权
     });
-    L.tileLayer('http://map.geoq.cn/ArcGIS/rest/services/ChinaOnlineStreetPurplishBlue/MapServer/tile/{z}/{y}/{x}').addTo(map)//地图底图样式
+  L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+    attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+    maxZoom: 18,
+    id: 'mapbox/streets-v11',
+    tileSize: 512,
+    zoomOffset: -1,
+    accessToken: 'pk.eyJ1IjoibGlhbmd4IiwiYSI6ImNsMms2aHdkbzAwcDgzYm5vYTZ4a3oxc3UifQ.NuBCSatZSFBzYf9u-UjN8w'
+}).addTo(map);
     this.$emit('loaded', { map, L });
   }
 }

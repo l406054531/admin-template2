@@ -4,16 +4,17 @@
     <div v-if="device==='mobile'&&sidebar.opened"
          class="drawer-bg"
          @click="handleClickOutside" />
-    <div v-if="showHeader"
-         class="header-container">
-      <Header></Header>
-    </div>
+
     <div class="content-container">
+
       <sidebar class="sidebar-container" />
       <div class="main-container">
+        <div v-if="showHeader"
+             class="header-container">
+          <Header></Header>
+        </div>
         <div :class="{'fixed-header':fixedHeader}">
           <navbar v-if="showNavbar" />
-          <!--<tags-view v-if="showTagsview"/>-->
         </div>
         <app-main />
       </div>
@@ -97,9 +98,9 @@ export default {
     position: fixed;
     top: 0;
   }
-  .myaudio{
-      position: fixed;
-      top: -10000px;
+  .myaudio {
+    position: fixed;
+    top: -10000px;
   }
 }
 .drawer-bg {
@@ -128,5 +129,4 @@ export default {
 .mobile .fixed-header {
   width: 100%;
 }
-
 </style>

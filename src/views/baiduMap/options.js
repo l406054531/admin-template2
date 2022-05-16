@@ -30,7 +30,9 @@ export let scatter = { // 散点图配置
 }
 
 export let options = { //echarts 配置
-
+  // geo: {
+  //   map: 'china'
+  // },
   bmap: { //设置百度地图显示哪些东西
     // center: [108.327649, 22.824988],
     // zoom: 8,
@@ -83,7 +85,9 @@ export let options = { //echarts 配置
       color: ['#50a3ba', '#eac736', '#d94e5d']
     },
   },
-  series: [
 
-  ],
+  series: [
+ 
+  ]
+
 }

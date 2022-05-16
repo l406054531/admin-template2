@@ -7,9 +7,9 @@
                       @refresh="handleRefresh"
                       @handleBatchDel="handleBatchDel" />
         <div class="search-block">
-          <search-form :formModel="searchFormModel"
+          <basics-form :formModel="searchFormModel"
                        :formElement="searchFormElement"
-                       @handleSearch="handleSearch"> </search-form>
+                       @handleSearch="handleSearch"> </basics-form>
 
         </div>
       </div>

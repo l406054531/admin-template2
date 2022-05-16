@@ -11,6 +11,8 @@ import './ui/globalControl' //全局控件
 
 import "./icons/iconfont/iconfont.css"
 
+// import "./directive"
+
 import * as echarts from 'echarts'
 Vue.prototype.$echarts = echarts
 
@@ -27,6 +29,7 @@ import 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
 Vue.config.productionTip = false
+
 
 new Vue({
   router,

@@ -40,27 +40,16 @@ export default {
       default: 'total, sizes, prev, pager, next, jumper'
     }
   },
-  data() {
-    return {
-      // currentPage: 1,
-      // pagesizes: [10, 20, 50, 100, 200],
-      // pagesize: 50
-    }
-  },
   methods: {
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.paginationInfo.pagesize = val
       this.$emit('handleSizeChange', this.paginationInfo)
     },
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.paginationInfo.currentPage = val
       this.$emit('handleCurrentChange', this.paginationInfo)
     }
   },
-  mounted() {
-  },
-  created() {
-  }
 }
 </script>
 
