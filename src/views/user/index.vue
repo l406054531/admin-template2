@@ -1,5 +1,5 @@
 <template>
-  <div class="test-view">
+  <div class="user">
     <basics-table :data="tableData"
                   :header="useConfig.getHeader()"
                   :loading.sync="loading"
@@ -26,6 +26,7 @@
 <script>
 import useConfig from './config';
 import useHttp from "@/utils/http"
+import { findMetadataElements } from "@/api/metadata"
 export default {
   name: 'user',
   data () {
@@ -50,7 +51,13 @@ export default {
       loading: true,
       idKey: 'idUser',
       httpUrl: 'user',
-      dialogVisible: false
+      dialogVisible: false,
+      typeTableHeader: [
+        { label: '-', prop: '', type: 'index' },
+        { label: '名称', prop: 'elementName' },
+        { label: '值', prop: 'elementValue' },
+        { label: '操作', prop: 'dataOperation' }
+      ]
     }
   },
   computed: {
@@ -65,11 +72,14 @@ export default {
     },
     useUserHttp () {
       return useHttp(this.httpUrl, this)
+    },
+    tableHeader(){
+      
     }
   },
   mounted () {
     this.getDataList()
-    this.findAllRoleList()
+    this.handleMetadataElements()
   },
   methods: {
     /** 获取user数据 */
@@ -108,13 +118,17 @@ export default {
         })
       }
     },
-
+    /**
+     * @description 打开新增/编辑的窗口
+     */
     handleOpenDialog (data, title) {
       this.dialogTitle = title
       this.rowData = data
       this.dialogVisible = true
     },
-
+    /**
+     * @description 关闭新增/编辑的窗口
+     */
     handleCloseDialog () {
       this.getDataList()
       this.dialogVisible = false
@@ -135,18 +149,15 @@ export default {
         this.getDataList()
       })
     },
-    /**获取所有角色 */
-    findAllRoleList () {
-      useHttp('role').getAllData((result) => {
-        let arr = result.dataList.map(item => {
-          return { label: item.roleName, value: item.roleField }
-        })
-        for (let item of this.formElement) {
-          if (item.label === '角色') {
-            item.typeselects = arr
-          }
+    async handleMetadataElements () {
+      const roles = await findMetadataElements('role')
+      for (let item of this.formElement) {
+        if (item.label === '角色') {
+          item.typeselects = roles.dataList.map(item => {
+            return { label: item.elementName, value: item.elementValue }
+          })
         }
-      })
+      }
     },
     handleSubmitSearch (data) {
       this.getDataList({ ...this.tableParams, ...data })

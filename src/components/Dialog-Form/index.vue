@@ -1,8 +1,9 @@
+
 <template>
   <el-dialog :title="dialogTitle"
              :visible.sync="dialogVisible"
              :close-on-click-modal="false"
-             width="550px"
+             :width="width+'px'"
              class="dialogClass"
              :before-close="handleCloseDialog">
     <basics-form ref="basicsForm"
@@ -33,7 +34,11 @@ export default {
     },
     rowData: Object,
     dialogTitle: String,
-    dialogVisible: Boolean
+    dialogVisible: Boolean,
+    width: {
+      type: Number,
+      default: 550
+    }
   },
   methods: {
     handleCloseDialog () {

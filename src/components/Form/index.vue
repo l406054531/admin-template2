@@ -11,7 +11,8 @@
         <el-form-item :key="index"
                       :label="item.label"
                       :prop="item.prop"
-                      :label-width="labelWidth">
+                      :label-width="labelWidth"
+                      :style="{width:formItemWidth?formItemWidth:''}">
           <el-input clearable
                     :disabled="item.disabled"
                     :show-password="item.showPassword"
@@ -37,7 +38,7 @@
                     :rows="item.rows?item.rows:5"
                     v-model="formModel[item.prop]"
                     :placeholder="item.placeholder"></el-input>
-          <!-- 选择器    带搜索 filterable  多选multiple-->
+          <!-- 选择器    带搜索 filterable  多选 multiple-->
           <el-select v-if="item.type==='select'"
                      v-model="formModel[item.prop]"
                      clearable
@@ -77,9 +78,8 @@
                           :value-format="item.valueFormat">
           </el-date-picker>
         </el-form-item>
-
       </template>
-
+      <slot></slot>
       <el-form-item>
         <div :class="[inline?'':'vertical']"
              v-if="submitBtn">
@@ -127,6 +127,7 @@ export default {
       type: String,
       default: '查询'
     },
+    formItemWidth:String,
     colSpan: Number
 
   },

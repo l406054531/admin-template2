@@ -185,7 +185,6 @@ export function deWeightArr (arr) {
 /**
  * @description 构造路由
  */
-
 export function generateRouter (userRouters) {
   let newRouters = userRouters.map((r) => {
     let routes = {
@@ -209,3 +208,49 @@ export function generateRouter (userRouters) {
   return newRouters;
 }
 
+/**
+ * @description 防抖函数
+ * @returns 
+ */
+export function debounce (callback, delay = 1000) {
+  let timer = null;
+  return function () {
+    clearTimeout(timer)
+    timer = setTimeout(function () {
+      callback()
+    }, delay);
+  }
+}
+/**
+ * @description 节流函数
+ */
+export function throttle (callback, delay = 1000) {
+  let timer
+  return function () {
+    if (!timer) {
+      timer = setTimeout(function () {
+        callback()
+        timer = null
+      }, delay);
+    }
+  }
+}
+
+export function getImgUrlName (path) {
+  let fileName
+  if (path.indexOf('/') > 0) {
+    fileName = path.substring(path.lastIndexOf('/') + 1, path.length)
+  } else {
+    fileName = path
+  }
+  return fileName
+}
+
+export function getElementsNameValue (data) {
+  return data.map(item => {
+    return {
+      value: item.elementValue,
+      label: item.elementName
+    }
+  })
+}

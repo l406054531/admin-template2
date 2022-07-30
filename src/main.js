@@ -25,6 +25,11 @@ Vue.component('count-to', countTo)
 import moment from 'moment';
 Vue.prototype.$moment = moment
 
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+// use
+Vue.use(mavonEditor)
+
 import 'leaflet'
 import 'leaflet/dist/leaflet.css'
 

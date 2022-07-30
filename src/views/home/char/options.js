@@ -55,11 +55,11 @@ export let lineOption = {
     {
       type: 'inside',
       start: 0,
-      end: 100,
+      end: 20,
     },
     {
       start: 0,
-      end: 100,
+      end: 20,
     },
   ],
   xAxis: {

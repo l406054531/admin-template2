@@ -18,3 +18,12 @@ export function updateUserImg (data) {
     data
   })
 }
+export function uploadArticleCacheImg (data) {
+  return request({
+    baseURL,
+    url: '/cos/uploadArticleCacheImg',
+    method: 'post',
+    formatType: 'file',
+    data
+  })
+}

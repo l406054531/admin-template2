@@ -1,5 +1,5 @@
 <template>
-  <!-- https://www.wangeditor.com/doc/ -->
+  <!-- https://www.wangeditor.com/-->
   <div id="main">
   </div>
 </template>

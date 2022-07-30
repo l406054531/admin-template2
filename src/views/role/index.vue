@@ -36,7 +36,7 @@ import useConfig from './config';
 import useHttp from "@/utils/http"
 import tree from './module/tree.vue';
 export default {
-  name:'role',
+  name: 'role',
   components: { tree },
   data () {
     return {

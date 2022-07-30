@@ -2,12 +2,12 @@
   <div class="main">
     <el-button type="primary"
                size="small"
-               @click="handleAdd">新增</el-button>
+               @click="handleAdd">{{addTitle}}</el-button>
     <el-button type="primary"
                size="small"
                @click="handleRefresh">刷新</el-button>
     <basics-form inline
-                 submitBtn
+                 :submitBtn='submitBtn'
                  :formElement="searchFormElement"
                  @handleSubmit="handleSubmit"> </basics-form>
     <el-table :data="data"
@@ -28,7 +28,7 @@
                          :label="item.label"
                          :align="align"
                          :min-width="item.width">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <label-component :init="item.render(scope.row)"></label-component>
           </template>
         </el-table-column>
@@ -71,10 +71,27 @@ export default {
       default: 'center'
     },
     params: Object,
-    searchFormElement: Array,
+    searchFormElement: {
+      type: Array,
+      default: () => []
+    },
     loading: {
       type: Boolean,
       default: true
+    },
+    addTitle: {
+      type: String,
+      default: '新增'
+    }
+  },
+  data () {
+    return {
+      submitBtn: true
+    }
+  },
+  mounted () {
+    if (this.searchFormElement.length==0) {
+      this.submitBtn = false
     }
   },
   methods: {
@@ -95,7 +112,7 @@ export default {
       this.$emit("handleSubmit", data)
     },
     setIndex (index) {
-      if (!this.params) return index
+      if (!this.params) return index+1
       let { pageNum, pageSize } = this.params
       index = pageSize * (pageNum - 1) + 1 + index
       return index

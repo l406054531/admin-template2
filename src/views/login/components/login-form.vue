@@ -65,7 +65,7 @@ export default {
   },
   mounted () {
     const isDev = process.env.NODE_ENV === 'development'
-    this.loginForm = isDev ? { username: "lxx", password: "lxia00521..." } : { username: "test", password: "123456" }
+    this.loginForm = isDev ? { username: "lxx", password: "lxia00521..." } : { username: "", password: "" }
   },
   methods: {
     /**

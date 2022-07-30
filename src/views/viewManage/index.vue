@@ -48,6 +48,7 @@
                        btnText="保存"
                        :rowData="rowData"
                        :rules="rules"
+                       submitBtn
                        :formElement="formElement"
                        @handleSubmit="updateData"></basics-form>
         </div>
@@ -80,11 +81,11 @@ export default {
       if (!value) {
         return callback(new Error('请输入路径'));
       }
-      const reg = /^\/[A-Za-z0-9]{4,8}$/g
+      const reg = /^\/[A-Za-z0-9\-]{4,}$/g
       if (reg.test(value)) {
         callback()
       } else {
-        callback('格式错误，/开头后面至少4位、至多8位字母或数字')
+        callback('格式错误，/开头后面至少4位')
       }
     }
     return {

@@ -19,6 +19,7 @@
         <app-main />
       </div>
     </div>
+     <el-backtop target=".content-container"></el-backtop>
   </div>
 </template>
 
@@ -128,5 +129,9 @@ export default {
 
 .mobile .fixed-header {
   width: 100%;
+}
+.main-container{
+  // background: url("../assets/img/mainBg.png");
+  background: #fff;
 }
 </style>

@@ -17,8 +17,8 @@ const createHttp = (url, vm) => {
       const result = await getPageListApi(this.url, data)
       result && callback(result);
     }
-    async getAllData (callback) {
-      const result = await getAllDataApi(this.url)
+    async getAllData (callback, data = {}) {
+      const result = await getAllDataApi(this.url, data)
       result && callback(result);
     }
     async addData (data, callback) {
