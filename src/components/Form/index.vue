@@ -46,7 +46,7 @@
                      :multiple="item.multiple"
                      :placeholder="item.placeholder"
                      @blur="item.blur?item.blur($event,formModel[item.prop]):''"
-                     @change="item.change?item.change(item):''">
+                     @change="item.change?item.change({value:formModel[item.prop],...item}):''">
             <el-option v-for="(selectedItem,index) in item.typeselects"
                        :key="index"
                        :label="selectedItem.label"
@@ -122,27 +122,41 @@ export default {
       type: Boolean,
       default: false
     },
-    rowData: Object,
+    rowData: {
+      type: Object,
+      default: () => { }
+    },
     btnText: {
       type: String,
       default: '查询'
     },
-    formItemWidth:String,
+    formItemWidth: String,
     colSpan: Number
 
   },
   watch: {
-    rowData: {
-      deep: true,
-      immediate: true,
-      handler (val) {
-        if (val) {
-          this.formModel = JSON.parse(JSON.stringify(val))
-        }
-      }
+    // rowData: {
+    //   deep: true,
+    //   immediate: true,
+    //   handler (val) {
+    //     if (val) {
+    //       this.formModel = JSON.parse(JSON.stringify(val))
+    //     }
+    //   }
+    // }
+    rowData (val) {
+      this.formModel = JSON.parse(JSON.stringify(val))
     }
   },
+  mounted () {
+    // this.formModel=JSON.parse(JSON.stringify(this.rowData))
+    const unWatch = this.$watch("formModel", (newVal, oldVal) => {
+      unWatch(); // 取消监听
+    });
+  },
+  computed: {
 
+  },
   methods: {
     validateForm () {
       let flag = null
