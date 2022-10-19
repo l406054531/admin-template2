@@ -64,6 +64,7 @@
         <basics-form labelWidth="100px"
                      btnText="提交"
                      submitBtn
+                     :rowData="rowData2"
                      :rules="rules"
                      :formElement="formElement"
                      @handleSubmit="addData"></basics-form>
@@ -119,6 +120,7 @@ export default {
       drawerShow: false, //抽屉状态
       direction: 'rtl', //抽屉状态
       rowData: {},
+      rowData2: {},
       httpUrl: 'view'
     };
   },

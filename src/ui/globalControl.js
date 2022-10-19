@@ -9,7 +9,7 @@ import basicsForm from '@/components/Form';
 import ButtonGroud from '@/components/Operation/button-group'
 // import excelButton from '@/components/Operation/Excel-button'
 import myPagination from '@/components/Operation/pagination'
-
+import buttonComponent from '@/components/Table/components/button-component.vue';
 import { borderBox8 } from '@jiaminghi/data-view'
 
 import basicsTable from '@/components/Table';
@@ -25,3 +25,4 @@ Vue.component('basics-form', basicsForm)
 Vue.component('basicsTable', basicsTable)
 Vue.component('basicsPagination', basicsPagination)
 Vue.component('dialogForm', dialogForm)
+Vue.component('buttonComponent', buttonComponent)

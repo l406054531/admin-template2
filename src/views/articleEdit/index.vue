@@ -23,7 +23,7 @@
                   type="textarea"
                   :rows="5"
                   placeholder="请输入内容"
-                  v-model="textareaValue">
+                  v-model="rowData.content">
         </el-input>
       </el-form-item>
 
@@ -50,9 +50,7 @@ export default {
         { label: '标题', prop: 'title', type: 'input' },
         { label: 'url', prop: 'url', type: 'input' },
         {
-          label: '类型', prop: 'type', type: 'select', typeselects: [{ label: 'Markdown', value: '0' }, { label: 'Html+Css', value: '1' }], change: (e) => {
-            this.handleTypeChange(e)
-          }
+          label: '类型', prop: 'type', type: 'select', typeselects: [{ label: 'Markdown', value: '0' }, { label: 'Html+Css', value: '1' }]
         },
         { label: '标签', prop: 'labels', type: 'select', typeselects: [], multiple: true },
         { label: '状态', prop: 'status', type: 'select', typeselects: [] },
@@ -83,7 +81,6 @@ export default {
           this.rowData = {}
           this.mdValue = ''
         }
-
       },
       deep: true
     }
@@ -110,7 +107,7 @@ export default {
   methods: {
     handleTypeChange (e) {
       this.rowData.type = e.value
-      console.log(this.rowData);
+
     },
     handleImgAdd (imgIndex, file) {
       let formdata = new FormData();
@@ -150,7 +147,7 @@ export default {
       if (this.rowData.type == '0') {
         data.content = this.mdValue.replace(/blog\/cache/g, 'blog/images');
       } else {
-        data.content = this.textareaValue
+        // data.content = this.textareaValue
       }
       data.moveImgs = moveImgs
       data.labels = data.labels.join(',')

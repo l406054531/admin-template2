@@ -1,5 +1,6 @@
 <template>
   <el-form ref="myform"
+           v-bind="$attrs"
            :model="formModel"
            :rules="rules"
            :inline="inline"
@@ -97,7 +98,7 @@
 export default {
   data () {
     return {
-      formModel: {}
+      // formModel: {}
     }
   },
   props: {
@@ -134,28 +135,36 @@ export default {
     colSpan: Number
 
   },
-  watch: {
-    // rowData: {
-    //   deep: true,
-    //   immediate: true,
-    //   handler (val) {
-    //     if (val) {
-    //       this.formModel = JSON.parse(JSON.stringify(val))
-    //     }
-    //   }
-    // }
-    rowData (val) {
-      this.formModel = JSON.parse(JSON.stringify(val))
-    }
-  },
+  // watch: {
+  //   rowData: {
+  //     deep: true,
+  //     immediate: true,
+  //     handler (val) {
+  //       if (val) {
+  //         this.formModel = JSON.parse(JSON.stringify(val))
+  //       }
+  //     }
+  //   }
+  // },
   mounted () {
-    // this.formModel=JSON.parse(JSON.stringify(this.rowData))
-    const unWatch = this.$watch("formModel", (newVal, oldVal) => {
-      unWatch(); // 取消监听
-    });
+    // if (this.rowData) {
+    //   console.log(this.rowData);
+    //   this.formModel = this.rowData
+    // }
+    // const unWatch = this.$watch("formModel", (newVal, oldVal) => {
+    //   unWatch(); // 取消监听
+    // });
   },
   computed: {
-
+    formModel: {
+      get () {
+        return this.rowData ? this.rowData : {}
+      },
+      // set (val) {
+      //   console.log(val);
+      //   return val
+      // }
+    }
   },
   methods: {
     validateForm () {
